@@ -30,7 +30,6 @@ export class LoginComponent {
   }
 
   onLogin() {
-        alert("User Found...");
         this.router.navigateByUrl('/dashboard');
     }
   }

@@ -1,3 +1,17 @@
-<p>
-  layout works!
-</p>
+<div class="sidebar">
+  <div class="logo">
+    <h2>Logo</h2>
+  </div>
+  <div class="menu">
+    <ul>
+      <li><button (click)="navigateTo('home')">Home</button></li>
+      <li><button (click)="navigateTo('students')">Estudiantes</button></li>
+      <li><button (click)="navigateTo('statistics')">Estadísticas</button></li>
+    </ul>
+  </div>
+  <div class="logout">
+    <button (click)="logout()">Cerrar Sesión</button>
+  </div>
+</div>
+<div class="content">
+</div>
