@@ -1,34 +1,63 @@
 <div class="parent">
-  <div class="container" [ngClass]="isSignDivVisiable ? 'active' :'' " id="container">
-      <div class="form-container sign-up">
-          <form>
-              <h1>Ingreso educador</h1>
-              <span>O gestor educativos</span>
-              <input type="email" name="email" [(ngModel)]="signUpObj.email" placeholder="Email">
-              <input type="password" name="password"  [(ngModel)]="signUpObj.password" placeholder="Password">
-              <button (click)="onRegister()">Entramos</button>
-          </form>
+  <div
+    class="container"
+    [ngClass]="isSignDivVisiable ? 'active' : ''"
+    id="container"
+  >
+    <div class="form-container sign-up">
+      <form>
+        <h1 style="color: black">Ingreso educador</h1>
+        <span style="color: black">O gestor educativos</span>
+        <input
+          type="email"
+          name="email"
+          [(ngModel)]="signUpObj.email"
+          placeholder="Email"
+        />
+        <input
+          type="password"
+          name="password"
+          [(ngModel)]="signUpObj.password"
+          placeholder="Password"
+        />
+        <button (click)="onRegister()">Entramos</button>
+      </form>
+    </div>
+    <div class="form-container sign-in">
+      <form>
+        <h1 style="color: black">Escoge tu ficha</h1>
+        <button (click)="onLogin()">Entra</button>
+      </form>
+    </div>
+    <div class="toggle-container">
+      <div class="toggle">
+        <div class="toggle-panel toggle-left">
+          <h1>Bienvenido a Learning paths</h1>
+          <p>
+            Ingresa tu correo y contraseña para acceder al gestor de contenido
+          </p>
+          <button
+            type="button"
+            class="hidden"
+            id="login"
+            (click)="isSignDivVisiable = false"
+          >
+            Estudiante
+          </button>
+        </div>
+        <div class="toggle-panel toggle-right">
+          <h1>Bienvenido pequeño amigo</h1>
+          <p>Selecciona el animal que te fue asignado</p>
+          <button
+            type="button"
+            class="hidden"
+            id="register"
+            (click)="isSignDivVisiable = true"
+          >
+            Educador
+          </button>
+        </div>
       </div>
-      <div class="form-container sign-in">
-          <form>
-              <h1>Escoge tu ficha</h1>
-              <button (click)="onLogin()">Entra</button>
-          </form>
-      </div>
-      <div class="toggle-container">
-          <div class="toggle">
-              <div class="toggle-panel toggle-left">
-                  <h1>Bienvenido a Learning paths</h1>
-                  <p>Ingresa tu correo y contraseña para acceder al gestor de contenido</p>
-                  <button type="button" class="hidden" id="login" (click)="isSignDivVisiable = false">Estudiante</button>
-              </div>
-              <div class="toggle-panel toggle-right">
-                  <h1>Bienvenido pequeño amigo</h1>
-                  <p>Selecciona el animal que te fue asignado</p>
-                  <button type="button" class="hidden" id="register" (click)="isSignDivVisiable = true">Educador</button>
-              </div>
-          </div>
-      </div>
+    </div>
   </div>
 </div>
-

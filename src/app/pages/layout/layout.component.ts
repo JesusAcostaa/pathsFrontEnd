@@ -4,11 +4,10 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.css']
+  styleUrls: ['./layout.component.css'],
 })
 export class LayoutComponent {
-
-  constructor(private router: Router) { }
+  constructor(private router: Router) {}
 
   navigateTo(route: string) {
     switch (route) {
@@ -27,8 +26,6 @@ export class LayoutComponent {
   }
 
   logout() {
-
-
-}
-
+    this.router.navigateByUrl('/login');
+  }
 }
