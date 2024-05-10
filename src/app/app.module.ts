@@ -9,6 +9,7 @@ import { ButtonModule } from 'primeng/button';
 import { NotFoundComponent } from './shared/components/not-found/not-found.component';
 import { LayoutComponent } from './core/layout/layout.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FirebaseModule } from './firebase.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,6 +22,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     LayoutComponent,
     NotFoundComponent,
     BrowserAnimationsModule,
+    FirebaseModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
