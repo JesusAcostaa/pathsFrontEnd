@@ -1,0 +1,5 @@
+:host ::ng-deep .p-menu-end {
+  display: grid;
+  place-items: end;
+  height: auto;
+}

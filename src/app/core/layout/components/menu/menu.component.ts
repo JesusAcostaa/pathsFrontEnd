@@ -4,7 +4,7 @@ import { BadgeModule } from 'primeng/badge';
 import { AvatarModule } from 'primeng/avatar';
 import { RippleModule } from 'primeng/ripple';
 import { MenuItem } from 'primeng/api';
-import { NgIf } from '@angular/common';
+import { NgIf, NgOptimizedImage } from '@angular/common';
 import { StyleClassModule } from 'primeng/styleclass';
 
 @Component({
@@ -19,6 +19,7 @@ import { StyleClassModule } from 'primeng/styleclass';
     RippleModule,
     NgIf,
     StyleClassModule,
+    NgOptimizedImage,
   ],
 })
 export class MenuComponent {

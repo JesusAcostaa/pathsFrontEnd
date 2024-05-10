@@ -1,55 +1,12 @@
 <p-menu [model]="items" styleClass="w-full h-screen md:w-15rem">
   <ng-template pTemplate="start">
     <span class="inline-flex align-items-center gap-1 px-2 py-2">
-      <svg
-        width="33"
-        height="35"
-        viewBox="0 0 33 35"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        class="block mx-auto"
-      >
-        <path d="..." fill="var(--primary-color)" />
-        <mask
-          id="mask0_1_36"
-          style="mask-type: luminance"
-          maskUnits="userSpaceOnUse"
-          x="0"
-          y="0"
-          width="31"
-          height="33"
-        >
-          <path d="..." fill="var(--primary-color-text)" />
-        </mask>
-        <g mask="url(#mask0_1_36)">
-          <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
-            d="..."
-            fill="var(--primary-color)"
-          />
-        </g>
-        <path d="..." fill="var(--primary-color-text)" />
-        <path d="..." fill="var(--primary-color-text)" />
-        <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
-          d="..."
-          fill="var(--primary-color-text)"
-        />
-        <path d="..." fill="var(--primary-color-text)" />
-        <path d="..." fill="var(--primary-color-text)" />
-        <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
-          d="..."
-          fill="var(--primary-color-text)"
-        />
-        <path d="..." fill="var(--primary-color-text)" />
-        <path d="..." fill="var(--primary-color-text)" />
-        <path d="..." fill="var(--primary-color-text)" />
-        <path d="..." fill="var(--primary-color-text)" />
-      </svg>
+      <img
+        ngSrc="./assets/images/logo.png"
+        alt="logo-app"
+        width="50"
+        height="50"
+      />
       <span class="font-medium text-xl font-semibold">
         Learning<span class="text-primary">Paths</span>
       </span>
@@ -76,21 +33,19 @@
     </a>
   </ng-template>
   <ng-template pTemplate="end">
-    <div class="flex align-content-end">
-      <button
-        pRipple
-        class="w-full p-link flex align-items-center p-2 pl-3 text-color hover:surface-200 border-noround sticky bottom-0"
-      >
-        <p-avatar
-          image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
-          class="mr-2"
-          shape="circle"
-        />
-        <span class="inline-flex flex-column">
-          <span class="font-bold">Amy Elsner</span>
-          <span class="text-sm">Admin</span>
-        </span>
-      </button>
-    </div>
+    <button
+      pRipple
+      class="w-full p-link flex align-items-center p-2 pl-3 text-color hover:surface-200 border-noround"
+    >
+      <p-avatar
+        image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+        class="mr-2"
+        shape="circle"
+      />
+      <span class="inline-flex flex-column">
+        <span class="font-bold">Amy Elsner</span>
+        <span class="text-sm">Admin</span>
+      </span>
+    </button>
   </ng-template>
 </p-menu>
