@@ -13,18 +13,9 @@ const routes: Routes = [
       import('./pages/login/login.component').then(mod => mod.LoginComponent),
   },
   {
-    path: '',
-    loadComponent: () =>
-      import('./pages/layout/layout.component').then(
-        mod => mod.LayoutComponent
-      ),
-    children: [
-      {
-        path: 'inicio',
-        loadComponent: () =>
-          import('./pages/home/home.component').then(mod => mod.HomeComponent),
-      },
-    ],
+    path: 'inicio',
+    loadChildren: () =>
+      import('./pages/config/home.routes').then(mod => mod.routes),
   },
   {
     path: '**',

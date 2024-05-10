@@ -6,8 +6,9 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './pages/login/login.component';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
-import { HomeComponent } from './pages/home/home.component';
 import { NotFoundComponent } from './shared/components/not-found/not-found.component';
+import { LayoutComponent } from './core/layout/layout.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [AppComponent],
@@ -17,8 +18,9 @@ import { NotFoundComponent } from './shared/components/not-found/not-found.compo
     FormsModule,
     ButtonModule,
     LoginComponent,
-    HomeComponent,
+    LayoutComponent,
     NotFoundComponent,
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
