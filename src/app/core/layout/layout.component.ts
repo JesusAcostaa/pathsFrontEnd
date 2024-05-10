@@ -1,35 +1,30 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { MenuComponent } from './components/menu/menu.component';
+import { AuthService } from '../services/auth.service';
+import { AsyncPipe } from "@angular/common";
 
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
   standalone: true,
-  imports: [ButtonModule, MenuComponent, RouterOutlet, RouterModule],
+  imports: [ButtonModule, MenuComponent, RouterOutlet, RouterModule, AsyncPipe],
   styleUrls: ['./layout.component.css'],
 })
 export class LayoutComponent {
-  constructor(private router: Router) {}
+  private authService = inject(AuthService);
+  private router = inject(Router);
 
-  navigateTo(route: string) {
-    switch (route) {
-      case 'home':
-        this.router.navigateByUrl('/home');
-        break;
-      case 'students':
-        this.router.navigateByUrl('/students');
-        break;
-      case 'statistics':
-        this.router.navigateByUrl('/statistics');
-        break;
-      default:
-        break;
-    }
+  public logout() {
+    this.authService.logout().subscribe({
+      next: () => {
+        this.router.navigate(['/login']);
+      },
+    });
   }
 
-  logout() {
-    this.router.navigateByUrl('/login');
+  get currentUser() {
+    return this.authService.currentUser;
   }
 }

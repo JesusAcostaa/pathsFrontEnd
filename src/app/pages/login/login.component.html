@@ -5,28 +5,41 @@
     id="container"
   >
     <div class="form-container sign-up">
-      <form>
+      <form [formGroup]="loginForm">
         <h1 style="color: black">Ingreso educador</h1>
         <span style="color: black">O gestor educativos</span>
         <input
           type="email"
           name="email"
-          [(ngModel)]="signUpObj.email"
+          formControlName="email"
           placeholder="Email"
         />
+        <span *ngIf="isRequiredEmail" class="text-red-800 text-left">
+          Ingresa tu correo
+        </span>
+        <span *ngIf="isInvalidEmail" class="text-red-800 text-left">
+          Correo no valido
+        </span>
         <input
           type="password"
           name="password"
-          [(ngModel)]="signUpObj.password"
+          formControlName="password"
           placeholder="Password"
         />
-        <button (click)="onRegister()">Entramos</button>
+        <span *ngIf="isRequiredPassword" class="text-red-800 text-left">
+          Ingresa tu contraseña
+        </span>
+
+        <span *ngIf="isInvalidLengthPassword" class="text-red-800 text-left">
+          La contraseña debe tener al menos 6 caracteres
+        </span>
+        <button pButton (click)="handleLogin()" [disabled]="loginForm.invalid">Entramos</button>
       </form>
     </div>
     <div class="form-container sign-in">
       <form>
         <h1 style="color: black">Escoge tu ficha</h1>
-        <button (click)="onLogin()">Entra</button>
+        <button [disabled]="loginForm.invalid">Entra</button>
       </form>
     </div>
     <div class="toggle-container">

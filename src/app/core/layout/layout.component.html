@@ -1,6 +1,6 @@
 <section class="flex">
-  <app-menu />
+  <app-menu (onLogout)="logout()" [user]="currentUser()"/>
   <div class="w-full m-5">
-    <router-outlet />
+    <router-outlet/>
   </div>
 </section>

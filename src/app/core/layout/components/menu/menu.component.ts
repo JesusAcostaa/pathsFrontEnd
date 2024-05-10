@@ -1,11 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { MenuModule } from 'primeng/menu';
 import { BadgeModule } from 'primeng/badge';
 import { AvatarModule } from 'primeng/avatar';
 import { RippleModule } from 'primeng/ripple';
 import { MenuItem } from 'primeng/api';
-import { NgIf, NgOptimizedImage } from '@angular/common';
+import { AsyncPipe, JsonPipe, NgIf, NgOptimizedImage } from '@angular/common';
 import { StyleClassModule } from 'primeng/styleclass';
+import { UserInformation } from '../../../interfaces/user.interface';
+import { Observable } from "rxjs";
 
 @Component({
   selector: 'app-menu',
@@ -20,9 +22,14 @@ import { StyleClassModule } from 'primeng/styleclass';
     NgIf,
     StyleClassModule,
     NgOptimizedImage,
+    JsonPipe,
+    AsyncPipe,
   ],
 })
 export class MenuComponent {
+  public onLogout = output<void>();
+  public user = input<UserInformation | undefined | null>();
+
   public items: MenuItem[] = [
     {
       separator: true,
@@ -61,7 +68,7 @@ export class MenuComponent {
         {
           label: 'Cerrar sesión',
           icon: 'pi pi-sign-out',
-          routerLink: '/login',
+          command: () => this.onLogout.emit(),
         },
       ],
     },
