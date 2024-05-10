@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
+  standalone: true,
+  imports: [ButtonModule],
   styleUrls: ['./layout.component.css'],
 })
 export class LayoutComponent {
