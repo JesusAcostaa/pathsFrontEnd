@@ -1,5 +1,7 @@
-import { NgModule } from '@angular/core';
+import { inject, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { authenticationGuard } from './core/guards/auth.guard';
+import { AuthService } from './core/services/auth.service';
 
 const routes: Routes = [
   {
@@ -14,6 +16,7 @@ const routes: Routes = [
   },
   {
     path: 'inicio',
+    canActivate: [authenticationGuard],
     loadChildren: () =>
       import('./pages/config/home.routes').then(mod => mod.routes),
   },
@@ -25,7 +28,6 @@ const routes: Routes = [
       ),
   },
 ];
-
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],

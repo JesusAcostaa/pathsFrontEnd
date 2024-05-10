@@ -42,7 +42,22 @@ export class LoginComponent implements OnInit {
     'auth/invalid-credential': 'Correo o contraseña inválidos',
   };
 
-  handleLogin() {
+  ngOnInit() {
+    this.authService.logout();
+
+    this.loginForm = new FormGroup<LoginForm>({
+      email: new FormControl('', {
+        nonNullable: true,
+        validators: [Validators.email, Validators.required],
+      }),
+      password: new FormControl('', {
+        nonNullable: true,
+        validators: [Validators.minLength(6), Validators.required],
+      }),
+    });
+  }
+
+  public handleLogin() {
     const { email, password } = this.loginForm.value;
 
     this.loaderService.show();
@@ -59,19 +74,6 @@ export class LoginComponent implements OnInit {
 
   private handleLoginError(code: string) {
     this.toastService.showError(this.typeLoginErrors[code]);
-  }
-
-  ngOnInit() {
-    this.loginForm = new FormGroup<LoginForm>({
-      email: new FormControl('', {
-        nonNullable: true,
-        validators: [Validators.email, Validators.required],
-      }),
-      password: new FormControl('', {
-        nonNullable: true,
-        validators: [Validators.minLength(6), Validators.required],
-      }),
-    });
   }
 
   get email() {

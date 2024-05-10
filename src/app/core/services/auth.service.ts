@@ -32,8 +32,4 @@ export class AuthService {
   public logout() {
     return from(signOut(this.firebaseAuth));
   }
-
-  public isLogged() {
-    return this.currentUser() !== null;
-  }
 }
