@@ -15,10 +15,8 @@ export class AppComponent implements OnInit {
 
   setUserInformation() {
     this.authService.user$.subscribe(user => {
-      console.log(user)
       if (!user) {
         this.authService.currentUser.set(null);
-        console.log(this.authService.currentUser());
         return;
       }
 
@@ -28,7 +26,6 @@ export class AppComponent implements OnInit {
         photoUrl: user.photoURL!,
         uid: user.uid!,
       });
-      console.log(this.authService.currentUser());
     });
   }
 }
