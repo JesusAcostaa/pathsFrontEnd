@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "paths-storage": {
+      "hosting": {
+        "paths-frontend": [
+          "paths-storage"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "paths-storage"
+  }
+}

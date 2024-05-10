@@ -1,0 +1,51 @@
+<p-menu [model]="items" styleClass="w-full h-screen md:w-15rem">
+  <ng-template pTemplate="start">
+    <span class="inline-flex align-items-center gap-1 px-2 py-2">
+      <img
+        ngSrc="./assets/images/logo.png"
+        alt="logo-app"
+        width="50"
+        height="50"
+      />
+      <span class="font-medium text-xl font-semibold">
+        Learning<span class="text-primary">Paths</span>
+      </span>
+    </span>
+  </ng-template>
+  <ng-template pTemplate="submenuheader" let-item>
+    <span class="text-primary font-bold">{{ item.label }}</span>
+  </ng-template>
+  <ng-template pTemplate="item" let-item>
+    <a
+      pRipple
+      class="flex align-items-center p-menuitem-link"
+      [routerLink]="item.routerLink"
+    >
+      <span [class]="item.icon"></span>
+      <span class="ml-2">{{ item.label }}</span>
+      <p-badge *ngIf="item.badge" class="ml-auto" [value]="item.badge"/>
+      <span
+        *ngIf="item.shortcut"
+        class="ml-auto border-1 surface-border border-round surface-100 text-xs p-1"
+      >
+        {{ item.shortcut }}
+      </span>
+    </a>
+  </ng-template>
+  <ng-template pTemplate="end">
+    <button
+      pRipple
+      class="w-full p-link flex align-items-center p-2 pl-3 text-color hover:surface-200 border-noround"
+    >
+      <p-avatar
+        image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+        class="mr-2"
+        shape="circle"
+      />
+      <span class="inline-flex flex-column">
+        <span class="font-bold">{{ user()?.userName ?? "Anonymous" }}</span>
+        <span class="text-sm">{{ user()?.email }}</span>
+      </span>
+    </button>
+  </ng-template>
+</p-menu>
