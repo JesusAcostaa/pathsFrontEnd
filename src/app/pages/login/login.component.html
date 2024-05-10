@@ -1,7 +1,7 @@
 <div class="parent">
   <div
     class="container"
-    [ngClass]="isSignDivVisiable ? 'active' : ''"
+    [ngClass]="isSignDivVisible ? 'active' : ''"
     id="container"
   >
     <div class="form-container sign-up">
@@ -40,7 +40,7 @@
             type="button"
             class="hidden"
             id="login"
-            (click)="isSignDivVisiable = false"
+            (click)="isSignDivVisible = false"
           >
             Estudiante
           </button>
@@ -52,7 +52,7 @@
             type="button"
             class="hidden"
             id="register"
-            (click)="isSignDivVisiable = true"
+            (click)="isSignDivVisible = true"
           >
             Educador
           </button>
