@@ -3,7 +3,11 @@ import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { MenuComponent } from './components/menu/menu.component';
 import { AuthService } from '../services/auth.service';
-import { AsyncPipe } from "@angular/common";
+import { AsyncPipe } from '@angular/common';
+import { LoaderService } from '../services/loader.service';
+import { delay } from 'rxjs';
+
+const DELAY_LOGOUT_TIME = 1000;
 
 @Component({
   selector: 'app-layout',
@@ -15,13 +19,19 @@ import { AsyncPipe } from "@angular/common";
 export class LayoutComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
+  private loaderService = inject(LoaderService);
 
   public logout() {
-    this.authService.logout().subscribe({
-      next: () => {
-        this.router.navigate(['/login']);
-      },
-    });
+    this.loaderService.show();
+    this.authService
+      .logout()
+      .pipe(delay(DELAY_LOGOUT_TIME))
+      .subscribe({
+        next: () => {
+          this.router.navigate(['/login']);
+          this.loaderService.hide();
+        },
+      });
   }
 
   get currentUser() {

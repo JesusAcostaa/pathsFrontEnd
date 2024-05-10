@@ -8,7 +8,7 @@ import {
 import { delay, from } from 'rxjs';
 import { UserInformation } from '../interfaces/user.interface';
 
-const DELAY_LOGIN_TIME = 2000;
+const DELAY_LOGIN_TIME = 1000;
 
 @Injectable({
   providedIn: 'root',
