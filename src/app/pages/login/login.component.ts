@@ -8,15 +8,16 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { AuthService } from '../../core/services/auth.service';
-import { ToastService } from '../../core/services/toast.service';
+import { AuthService, ToastService, LoaderService } from '../../core/services';
 import { ButtonModule } from 'primeng/button';
-import { LoaderService } from '../../core/services/loader.service';
+import { finalize } from 'rxjs';
 
 interface LoginForm {
   email: FormControl<string>;
   password: FormControl<string>;
 }
+
+const DELAY_LOGIN_TIME = 3000;
 
 @Component({
   selector: 'app-login',
@@ -26,13 +27,13 @@ interface LoginForm {
   styleUrl: './login.component.css',
 })
 export class LoginComponent implements OnInit {
-  private _router = inject(Router);
-  private _authService = inject(AuthService);
-  private _toastService = inject(ToastService);
-  private _loaderService = inject(LoaderService);
+  private router = inject(Router);
+  private authService = inject(AuthService);
+  private toastService = inject(ToastService);
+  private loaderService = inject(LoaderService);
 
-  public isSignDivVisible: boolean = true;
-  public loginForm!: FormGroup<LoginForm>;
+  isSignDivVisible: boolean = true;
+  loginForm!: FormGroup<LoginForm>;
 
   private typeLoginErrors: Record<string, string> = {
     'auth/invalid-email': 'Correo o contraseña inválidos',
@@ -40,8 +41,6 @@ export class LoginComponent implements OnInit {
   };
 
   ngOnInit() {
-    this._authService.logout();
-
     this.loginForm = new FormGroup<LoginForm>({
       email: new FormControl('', {
         nonNullable: true,
@@ -54,16 +53,26 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  public async signIn() {
-    this._loaderService.show();
-    this._authService.register().then(() => {
-      this._loaderService.hide();
-      this._router.navigate(['/inicio']);
-    });
+  public handleLogin() {
+    const { email, password } = this.loginForm.value;
+
+    this.loaderService.show();
+    this.authService
+      .login(email, password)
+      .then(data => {
+        console.log(data);
+        this.router.navigateByUrl('/inicio');
+      })
+      .catch(error => {
+        this.handleLoginError(error.code);
+      })
+      .finally(() => {
+        this.loaderService.hide();
+      });
   }
 
   private handleLoginError(code: string) {
-    this._toastService.showError(this.typeLoginErrors[code]);
+    this.toastService.showError(this.typeLoginErrors[code]);
   }
 
   get email() {

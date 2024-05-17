@@ -1,9 +1,19 @@
 import firebase from 'firebase/compat';
 
-export type UserInformation = firebase.User | null;
+export interface UserInformation {
+  email: string;
+  role: UserRoles;
+  name: string;
+  photoURL: string;
+}
 
 export enum UserRoles {
-  Admin = 'admin',
-  Student = 'student',
-  Teacher = 'teacher',
+  Admin = 'ADMIN',
+  Student = 'STUDENT',
+  Teacher = 'TEACHER',
+}
+
+export interface UserForm {
+  email: string;
+  password: string;
 }

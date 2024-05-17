@@ -6,7 +6,7 @@ import { RippleModule } from 'primeng/ripple';
 import { MenuItem } from 'primeng/api';
 import { AsyncPipe, JsonPipe, NgIf, NgOptimizedImage } from '@angular/common';
 import { StyleClassModule } from 'primeng/styleclass';
-import { UserInformation } from '../../../interfaces/user.interface';
+import { UserInformation } from '../../../interfaces';
 import { FormatNamePipe } from "./format-name.pipe";
 
 @Component({
@@ -29,7 +29,7 @@ import { FormatNamePipe } from "./format-name.pipe";
 })
 export class MenuComponent {
   public onLogout = output<void>();
-  public user = input<UserInformation>();
+  public user = input<UserInformation | null>();
 
   public items: MenuItem[] = [
     {

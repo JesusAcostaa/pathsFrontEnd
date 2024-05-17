@@ -1,44 +1,45 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { GoogleAuthProvider } from '@angular/fire/auth';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-import firebase from 'firebase/compat';
-import { from, Observable } from 'rxjs';
-import { UserInformation } from '../interfaces/user.interface';
-import { UserService } from "./user.service";
+import {
+  Auth,
+  signInWithEmailAndPassword,
+  signOut,
+  user,
+} from '@angular/fire/auth';
+import { from, of } from 'rxjs';
+import { UserInformation } from '../interfaces';
+import { UserService } from './user.service';
+
+const DELAY_LOGIN_TIME = 1000;
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private _afAuth = inject(AngularFireAuth);
+  private _firebaseAuth = inject(Auth);
   private _userService = inject(UserService);
 
-  public currentUser = signal<UserInformation>(null);
+  private user$ = user(this._firebaseAuth);
+  public currentUser = signal<UserInformation | null>(null);
 
-  public async register() {
-    const { user } = await this.googleAuth();
-    await this.registerUser(user);
-
-    this.updateUser(user);
+  public async login(email = '', password = '') {
+    try {
+      await signInWithEmailAndPassword(this._firebaseAuth, email, password);
+      const user = await this._userService.getUserByEmail(email);
+      this.updateCurrentUser(user);
+    } catch (error) {
+      return Promise.reject(error);
+    }
   }
 
-  private async googleAuth(): Promise<firebase.auth.UserCredential> {
-    return await this._afAuth.signInWithPopup(new GoogleAuthProvider());
-  }
-
-  private async registerUser(user: UserInformation) {
-    await this._userService.validate(user);
-  }
-
-  private updateUser(user: UserInformation) {
+  private updateCurrentUser(user: UserInformation) {
     this.currentUser.set(user);
   }
 
-  public isLogged() {
-    return from(this._afAuth.currentUser);
+  public logout() {
+    return from(signOut(this._firebaseAuth));
   }
 
-  public logout(): Observable<void> {
-    return from(this._afAuth.signOut());
+  public isLogged() {
+    return of(this.currentUser() !== null)
   }
 }

@@ -1,7 +1,6 @@
 import { lastValueFrom } from 'rxjs';
 import { inject, Injectable } from '@angular/core';
 import {
-  addDoc,
   collection,
   collectionData,
   Firestore,
@@ -9,7 +8,8 @@ import {
   query,
   where,
 } from '@angular/fire/firestore';
-import { UserInformation } from '../interfaces';
+import { UserForm, UserInformation } from '../interfaces';
+import { FirebaseUtils } from '../../shared/utils';
 
 const PATH = 'users';
 
@@ -20,22 +20,14 @@ export class UserService {
   private _firestore = inject(Firestore);
   private _collection = collection(this._firestore, PATH);
 
-  public async validate(teacher: UserInformation) {
-    const user = await this.getUserByEmail(teacher?.email ?? '');
-    const isAExistingUser = !user.empty;
-
-    if (!isAExistingUser) {
-      return Promise.reject('Correo o contraseña inválidos');
-    }
-
-    return Promise.resolve();
-  }
-
-  async getUserByEmail(email: string) {
-    return await getDocs(query(this._collection, where('uid', '==', email)));
+  async getUserByEmail(email: string): Promise<UserInformation> {
+    const data = await getDocs(
+      query(this._collection, where('email', '==', email))
+    );
+    return FirebaseUtils.getDataFromQuery(data).at(0) as UserInformation;
   }
 
   async getAll() {
-    return lastValueFrom(collectionData(this._collection));
+    return await lastValueFrom(collectionData(this._collection));
   }
 }

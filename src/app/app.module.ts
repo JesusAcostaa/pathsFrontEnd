@@ -15,6 +15,11 @@ import { MessageService } from 'primeng/api';
 import { LoaderComponent } from './shared/components/loader/loader.component';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import { environment } from '../environments/environments';
+import { initializeApp, provideFirebaseApp } from "@angular/fire/app";
+import { getAuth, provideAuth } from "@angular/fire/auth";
+import { getFirestore, provideFirestore } from "@angular/fire/firestore";
+import { getFunctions, provideFunctions } from "@angular/fire/functions";
+import { getStorage, provideStorage } from "@angular/fire/storage";
 
 @NgModule({
   declarations: [AppComponent],
@@ -33,7 +38,11 @@ import { environment } from '../environments/environments';
   ],
   providers: [
     MessageService,
-    firebaseProviders,
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideAuth(() => getAuth()),
+    provideFirestore(() => getFirestore()),
+    provideFunctions(() => getFunctions()),
+    provideStorage(() => getStorage()),
     { provide: FIREBASE_OPTIONS, useValue: environment.firebase },
   ],
   bootstrap: [AppComponent],

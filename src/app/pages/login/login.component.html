@@ -5,7 +5,7 @@
     id="container"
   >
     <div class="form-container sign-up">
-      <form [formGroup]="loginForm">
+      <form [formGroup]="loginForm" (ngSubmit)="handleLogin()">
         <h1 style="color: black">Ingreso educador</h1>
         <span style="color: black">O gestor educativos</span>
         <input
@@ -33,7 +33,7 @@
         <span *ngIf="isInvalidLengthPassword" class="text-red-800 text-left">
           La contraseña debe tener al menos 6 caracteres
         </span>
-        <button pButton (click)="signIn()" [disabled]="loginForm.invalid">Entramos</button>
+        <button type="submit" pButton [disabled]="loginForm.invalid">Entramos</button>
       </form>
     </div>
     <div class="form-container sign-in">
