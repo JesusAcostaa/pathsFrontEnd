@@ -30,6 +30,7 @@ export class LayoutComponent {
         next: () => {
           this.router.navigate(['/login']);
           this.loaderService.hide();
+          sessionStorage.clear();
         },
       });
   }

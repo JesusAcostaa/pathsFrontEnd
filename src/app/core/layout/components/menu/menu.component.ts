@@ -7,7 +7,7 @@ import { MenuItem } from 'primeng/api';
 import { AsyncPipe, JsonPipe, NgIf, NgOptimizedImage } from '@angular/common';
 import { StyleClassModule } from 'primeng/styleclass';
 import { UserInformation } from '../../../interfaces/user.interface';
-import { Observable } from "rxjs";
+import { FormatNamePipe } from "./format-name.pipe";
 
 @Component({
   selector: 'app-menu',
@@ -24,11 +24,12 @@ import { Observable } from "rxjs";
     NgOptimizedImage,
     JsonPipe,
     AsyncPipe,
+    FormatNamePipe,
   ],
 })
 export class MenuComponent {
   public onLogout = output<void>();
-  public user = input<UserInformation | undefined | null>();
+  public user = input<UserInformation>();
 
   public items: MenuItem[] = [
     {

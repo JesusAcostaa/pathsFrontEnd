@@ -33,19 +33,21 @@
     </a>
   </ng-template>
   <ng-template pTemplate="end">
-    <button
-      pRipple
-      class="w-full p-link flex align-items-center p-2 pl-3 text-color hover:surface-200 border-noround"
-    >
-      <p-avatar
-        image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
-        class="mr-2"
-        shape="circle"
-      />
-      <span class="inline-flex flex-column">
-        <span class="font-bold">{{ user()?.userName ?? "Anonymous" }}</span>
-        <span class="text-sm">{{ user()?.email }}</span>
+    @if (user(); as user) {
+      <button
+        pRipple
+        class="w-full p-link flex align-items-center p-2 pl-3 text-color hover:surface-200 border-noround"
+      >
+        <p-avatar
+          [image]="user?.photoURL ?? ''"
+          class="mr-2"
+          shape="circle"
+        />
+        <span class="inline-flex flex-column">
+        <span class="font-bold">{{ user?.displayName ?? '' | formatName }}</span>
+        <span class="text-sm">{{ user?.email }}</span>
       </span>
-    </button>
+      </button>
+    }
   </ng-template>
 </p-menu>

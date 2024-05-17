@@ -33,7 +33,7 @@
         <span *ngIf="isInvalidLengthPassword" class="text-red-800 text-left">
           La contraseña debe tener al menos 6 caracteres
         </span>
-        <button pButton (click)="handleLogin()" [disabled]="loginForm.invalid">Entramos</button>
+        <button pButton (click)="signIn()" [disabled]="loginForm.invalid">Entramos</button>
       </form>
     </div>
     <div class="form-container sign-in">

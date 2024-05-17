@@ -9,10 +9,12 @@ import { ButtonModule } from 'primeng/button';
 import { NotFoundComponent } from './shared/components/not-found/not-found.component';
 import { LayoutComponent } from './core/layout/layout.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FirebaseModule } from './firebase.module';
+import { firebaseProviders } from './firebase.module';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
-import { LoaderComponent } from "./shared/components/loader/loader.component";
+import { LoaderComponent } from './shared/components/loader/loader.component';
+import { FIREBASE_OPTIONS } from '@angular/fire/compat';
+import { environment } from '../environments/environments';
 
 @NgModule({
   declarations: [AppComponent],
@@ -25,12 +27,15 @@ import { LoaderComponent } from "./shared/components/loader/loader.component";
     LayoutComponent,
     NotFoundComponent,
     BrowserAnimationsModule,
-    FirebaseModule,
     ToastModule,
     LoginComponent,
     LoaderComponent,
   ],
-  providers: [MessageService],
+  providers: [
+    MessageService,
+    firebaseProviders,
+    { provide: FIREBASE_OPTIONS, useValue: environment.firebase },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

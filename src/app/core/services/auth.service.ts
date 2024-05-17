@@ -1,35 +1,44 @@
 import { inject, Injectable, signal } from '@angular/core';
-import {
-  Auth,
-  signInWithEmailAndPassword,
-  signOut,
-  user,
-} from '@angular/fire/auth';
-import { delay, from } from 'rxjs';
+import { GoogleAuthProvider } from '@angular/fire/auth';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import firebase from 'firebase/compat';
+import { from, Observable } from 'rxjs';
 import { UserInformation } from '../interfaces/user.interface';
-
-const DELAY_LOGIN_TIME = 1000;
+import { UserService } from "./user.service";
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private firebaseAuth = inject(Auth);
+  private _afAuth = inject(AngularFireAuth);
+  private _userService = inject(UserService);
 
-  public user$ = user(this.firebaseAuth);
-  public currentUser = signal<UserInformation | null | undefined>(undefined);
+  public currentUser = signal<UserInformation>(null);
 
-  public login(email = '', password = '') {
-    try {
-      return from(
-        signInWithEmailAndPassword(this.firebaseAuth, email, password)
-      ).pipe(delay(DELAY_LOGIN_TIME));
-    } catch (error) {
-      return from(Promise.reject(error));
-    }
+  public async register() {
+    const { user } = await this.googleAuth();
+    await this.registerUser(user);
+
+    this.updateUser(user);
   }
 
-  public logout() {
-    return from(signOut(this.firebaseAuth));
+  private async googleAuth(): Promise<firebase.auth.UserCredential> {
+    return await this._afAuth.signInWithPopup(new GoogleAuthProvider());
+  }
+
+  private async registerUser(user: UserInformation) {
+    await this._userService.validate(user);
+  }
+
+  private updateUser(user: UserInformation) {
+    this.currentUser.set(user);
+  }
+
+  public isLogged() {
+    return from(this._afAuth.currentUser);
+  }
+
+  public logout(): Observable<void> {
+    return from(this._afAuth.signOut());
   }
 }

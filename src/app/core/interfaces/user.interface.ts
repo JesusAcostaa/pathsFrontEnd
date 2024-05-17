@@ -1,6 +1,9 @@
-export interface UserInformation {
-  email: string;
-  userName: string;
-  photoUrl: string;
-  uid: string;
+import firebase from 'firebase/compat';
+
+export type UserInformation = firebase.User | null;
+
+export enum UserRoles {
+  Admin = 'admin',
+  Student = 'student',
+  Teacher = 'teacher',
 }
