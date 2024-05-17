@@ -1,11 +1,12 @@
 import { MenuItem } from 'primeng/api';
 
 export interface UserInformation {
+  id: string;
   email: string;
   role: UserRoles;
   name: string;
   photoURL: string;
-  menu: MenuItem[];
+  menu?: MenuItem[];
 }
 
 export enum UserRoles {

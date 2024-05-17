@@ -11,7 +11,7 @@ import { LayoutComponent } from './core/layout/layout.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { firebaseProviders } from './firebase.module';
 import { ToastModule } from 'primeng/toast';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { LoaderComponent } from './shared/components/loader/loader.component';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import { environment } from '../environments/environments';
@@ -37,6 +37,7 @@ import { getStorage, provideStorage } from "@angular/fire/storage";
     LoaderComponent,
   ],
   providers: [
+    ConfirmationService,
     MessageService,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),

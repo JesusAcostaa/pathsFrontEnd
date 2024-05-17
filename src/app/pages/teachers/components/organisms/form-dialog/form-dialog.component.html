@@ -1,0 +1,87 @@
+<p-dialog
+  [visible]="isVisible()"
+  (visibleChange)="onClose.emit()"
+  [style]="{ width: '450px' }"
+  header="Datos del profesor"
+  [modal]="true"
+  styleClass="p-fluid">
+  <ng-template pTemplate="content">
+    <form [formGroup]="form">
+      @if (teacher()) {
+        <img
+          [ngSrc]="teacher()?.photoURL ?? ''"
+          [alt]="teacher()?.photoURL ?? ''"
+          width="200"
+          height="210"
+          class="block m-auto pb-3"
+        />
+      }
+
+      <div class="field">
+        <label for="name">Nombre</label>
+        <input
+          type="text"
+          pInputText
+          id="name"
+          formControlName="name"
+          aria-describedby="username"
+          required
+          autofocus/>
+        <small *ngIf="isRequiredName" class="text-red-500" id="username">
+          Campo requerido
+        </small>
+      </div>
+
+      <div class="field">
+        <label for="email">Correo</label>
+        <input
+          id="email"
+          pInputText
+          formControlName="email"
+          aria-describedby="userEmail"
+          required/>
+        <small *ngIf="isRequiredEmail" class="text-red-500" id="userEmail">
+          Campo requerido
+        </small>
+
+        <small *ngIf="isInvalidEmail" class="text-red-500">
+          Ingresa un correo válido
+        </small>
+      </div>
+
+      <div class="field">
+        <label for="photoURL">Picture</label>
+        <input
+          id="photoURL"
+          pInputText
+          formControlName="photoURL"
+        />
+      </div>
+
+      <div class="field">
+        <label for="role">Rol</label>
+        <input
+          id="role"
+          pInputText
+          formControlName="role"
+        />
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      pRipple
+      label="Cancelar"
+      icon="pi pi-times"
+      [text]="true"
+      (click)="onClose.emit()"/>
+    <p-button
+      pRipple
+      label="Guardar"
+      icon="pi pi-check"
+      [text]="true"
+      [disabled]="form.invalid"
+      (click)="handleSave()"/>
+  </ng-template>
+</p-dialog>

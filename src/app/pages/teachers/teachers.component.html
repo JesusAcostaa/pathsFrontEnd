@@ -1,1 +1,69 @@
-<p class="m-0">teachers works!</p>
+<p-card>
+  <p-confirmPopup />
+
+  <p-toolbar styleClass="mb-4 gap-2">
+    <ng-template pTemplate="left">
+      <p-button
+        pRipple
+        severity="success"
+        label="Nuevo"
+        icon="pi pi-plus"
+        (click)="handleSave()"
+        class="mr-2"/>
+    </ng-template>
+  </p-toolbar>
+
+  <p-table
+    [value]="teachers()"
+    [tableStyle]="{ 'min-width': '30rem' }"
+    [(selection)]="selectedTeacher"
+    selectionMode="single"
+    [rowHover]="true"
+    dataKey="id">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Nombre</th>
+        <th>Correo</th>
+        <th>Picture</th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-teacher>
+      <tr>
+        <td>{{ teacher.name }}</td>
+        <td>{{ teacher.email }}</td>
+        <td>
+          <img
+            [src]="teacher.photoURL"
+            [alt]="teacher.name"
+            width="50"
+            class="shadow-4"/>
+        </td>
+        <td>
+          <p-button
+            pRipple
+            icon="pi pi-pencil"
+            class="mr-2"
+            [rounded]="true"
+            [outlined]="true"
+            severity="success"
+            (click)="editTeacher(teacher)"/>
+          <p-button
+            pRipple
+            icon="pi pi-trash"
+            severity="danger"
+            [rounded]="true"
+            [outlined]="true"
+            (click)="deleteTeacher(teacher, $event)"/>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-card>
+
+<app-form-dialog
+  [isVisible]="isModalVisible()"
+  [teacher]="selectedTeacher()"
+  (onSave)="createTeacher($event)"
+  (onClose)="closeDialog()"
+/>

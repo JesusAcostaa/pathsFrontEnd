@@ -26,6 +26,7 @@ export class AuthService {
     try {
       await signInWithEmailAndPassword(this._firebaseAuth, email, password);
       const user = await this._userService.getUserByEmail(email);
+      console.log(user)
       this.updateCurrentUser(user);
     } catch (error) {
       console.log(error)
