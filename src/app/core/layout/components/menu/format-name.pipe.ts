@@ -6,17 +6,12 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class FormatNamePipe implements PipeTransform {
   transform(value: string): string {
-    const [firstName, secondName, firstLastName, secondLastName] =
-      value.split(' ');
+    const [firstName, secondName, firstLastName] = value.split(' ');
 
-    if (secondName && secondLastName) {
+    if (secondName && firstLastName) {
       return `${firstName} ${firstLastName}`;
     }
 
-    if (secondName) {
-      return `${firstName} ${secondName}`;
-    }
-
-    return '';
+    return firstName || '';
   }
 }

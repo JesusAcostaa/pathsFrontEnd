@@ -8,6 +8,7 @@ import {
 import { from, of } from 'rxjs';
 import { UserInformation } from '../interfaces';
 import { UserService } from './user.service';
+import { Menu } from 'primeng/menu';
 
 const DELAY_LOGIN_TIME = 1000;
 
@@ -27,6 +28,7 @@ export class AuthService {
       const user = await this._userService.getUserByEmail(email);
       this.updateCurrentUser(user);
     } catch (error) {
+      console.log(error)
       return Promise.reject(error);
     }
   }
@@ -40,6 +42,6 @@ export class AuthService {
   }
 
   public isLogged() {
-    return of(this.currentUser() !== null)
+    return of(this.currentUser() !== null);
   }
 }

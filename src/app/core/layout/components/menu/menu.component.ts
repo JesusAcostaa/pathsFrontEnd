@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, input, OnInit, output } from '@angular/core';
 import { MenuModule } from 'primeng/menu';
 import { BadgeModule } from 'primeng/badge';
 import { AvatarModule } from 'primeng/avatar';
@@ -7,7 +7,7 @@ import { MenuItem } from 'primeng/api';
 import { AsyncPipe, JsonPipe, NgIf, NgOptimizedImage } from '@angular/common';
 import { StyleClassModule } from 'primeng/styleclass';
 import { UserInformation } from '../../../interfaces';
-import { FormatNamePipe } from "./format-name.pipe";
+import { FormatNamePipe } from './format-name.pipe';
 
 @Component({
   selector: 'app-menu',
@@ -27,54 +27,22 @@ import { FormatNamePipe } from "./format-name.pipe";
     FormatNamePipe,
   ],
 })
-export class MenuComponent {
+export class MenuComponent implements OnInit {
   public onLogout = output<void>();
   public user = input<UserInformation | null>();
 
-  public items: MenuItem[] = [
-    {
-      separator: true,
-    },
-    {
-      label: 'Gestión',
-      items: [
-        {
-          label: 'Profesores',
-          icon: 'pi pi-address-book',
-          routerLink: '/inicio',
-        },
-        {
-          label: 'Estudiantes',
-          icon: 'pi pi-users',
-          routerLink: '/inicio/gestion-estudiantes',
-        },
-      ],
-    },
-    {
-      label: 'Actividades',
-      items: [
-        {
-          label: 'Rutas',
-          icon: 'pi pi-sparkles',
-          routerLink: '/inicio/rutas-aprendizaje',
-        },
-        {
-          label: 'Recursos',
-          icon: 'pi pi-inbox',
-          routerLink: '/inicio/gestion-recursos',
-        },
-        {
-          separator: true,
-        },
-        {
-          label: 'Cerrar sesión',
-          icon: 'pi pi-sign-out',
-          command: () => this.onLogout.emit(),
-        },
-      ],
-    },
-    {
-      separator: true,
-    },
-  ];
+  public items: MenuItem[] = [];
+
+  ngOnInit() {
+    const logOutItem = {
+      label: 'Cerrar sesión',
+      icon: 'pi pi-sign-out',
+      command: () => this.onLogout.emit(),
+    };
+
+    this.items = this.user()?.menu ?? [];
+    this.items
+      .find(item => item.label === 'Actividades')
+      ?.items?.push(logOutItem);
+  }
 }

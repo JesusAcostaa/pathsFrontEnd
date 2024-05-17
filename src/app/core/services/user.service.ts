@@ -8,8 +8,9 @@ import {
   query,
   where,
 } from '@angular/fire/firestore';
-import { UserForm, UserInformation } from '../interfaces';
+import { UserInformation } from '../interfaces';
 import { FirebaseUtils } from '../../shared/utils';
+import { MenuItem } from 'primeng/api';
 
 const PATH = 'users';
 
@@ -24,7 +25,13 @@ export class UserService {
     const data = await getDocs(
       query(this._collection, where('email', '==', email))
     );
-    return FirebaseUtils.getDataFromQuery(data).at(0) as UserInformation;
+    const user = FirebaseUtils.getDataFromQuery(data).at(0) as UserInformation;
+    const { menu } = await FirebaseUtils.getDataFromReference(user.menu as any);
+
+    return {
+      ...user,
+      menu: menu as MenuItem[],
+    };
   }
 
   async getAll() {

@@ -1,10 +1,11 @@
-import firebase from 'firebase/compat';
+import { MenuItem } from 'primeng/api';
 
 export interface UserInformation {
   email: string;
   role: UserRoles;
   name: string;
   photoURL: string;
+  menu: MenuItem[];
 }
 
 export enum UserRoles {

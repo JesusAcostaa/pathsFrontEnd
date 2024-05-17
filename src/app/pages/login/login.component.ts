@@ -10,7 +10,6 @@ import {
 } from '@angular/forms';
 import { AuthService, ToastService, LoaderService } from '../../core/services';
 import { ButtonModule } from 'primeng/button';
-import { finalize } from 'rxjs';
 
 interface LoginForm {
   email: FormControl<string>;
@@ -60,7 +59,6 @@ export class LoginComponent implements OnInit {
     this.authService
       .login(email, password)
       .then(data => {
-        console.log(data);
         this.router.navigateByUrl('/inicio');
       })
       .catch(error => {
