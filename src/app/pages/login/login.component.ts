@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgClass, NgIf } from '@angular/common';
 import {
   FormControl,
   FormGroup,
@@ -22,7 +22,7 @@ const DELAY_LOGIN_TIME = 3000;
   selector: 'app-login',
   templateUrl: './login.component.html',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, ButtonModule],
+  imports: [FormsModule, ReactiveFormsModule, ButtonModule, NgClass, NgIf],
   styleUrl: './login.component.css',
 })
 export class LoginComponent implements OnInit {

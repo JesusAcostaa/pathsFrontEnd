@@ -1,9 +1,7 @@
-import { inject, NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { authenticationGuard } from './core/guards/auth.guard';
-import { AuthService } from './core/services/auth.service';
 
-const routes: Routes = [
+export const routes: Routes = [
   {
     path: '',
     redirectTo: 'login',
@@ -18,7 +16,7 @@ const routes: Routes = [
     path: 'inicio',
     canActivate: [authenticationGuard],
     loadChildren: () =>
-      import('./pages/config/home.routes').then(mod => mod.routes),
+      import('./pages/config/layout.routes').then(mod => mod.layoutRoutes),
   },
   {
     path: '**',
@@ -28,8 +26,3 @@ const routes: Routes = [
       ),
   },
 ];
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
-})
-export class AppRoutingModule {}
