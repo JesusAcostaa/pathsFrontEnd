@@ -7,12 +7,11 @@ import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getFunctions, provideFunctions } from '@angular/fire/functions';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideHttpClient } from '@angular/common/http';
 
 import { ConfirmationService, MessageService } from 'primeng/api';
 
 import { routes } from './app-routes';
-import { httpLoaderInterceptor } from './core/interceptors';
 import { environment } from '../environments/environments';
 
 export const appConfig: ApplicationConfig = {
@@ -21,7 +20,7 @@ export const appConfig: ApplicationConfig = {
     MessageService,
     provideRouter(routes),
     provideAnimations(),
-    provideHttpClient(withInterceptors([httpLoaderInterceptor])),
+    provideHttpClient(),
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),

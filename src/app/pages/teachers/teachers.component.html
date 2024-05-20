@@ -1,14 +1,13 @@
 <p-card>
-  <p-confirmPopup />
+  <p-confirmPopup/>
 
   <p-toolbar styleClass="mb-4 gap-2">
     <ng-template pTemplate="left">
       <p-button
         pRipple
-        severity="success"
         label="Nuevo"
         icon="pi pi-plus"
-        (click)="handleSave()"
+        (click)="handleAdd()"
         class="mr-2"/>
     </ng-template>
   </p-toolbar>
@@ -19,6 +18,9 @@
     [(selection)]="selectedTeacher"
     selectionMode="single"
     [rowHover]="true"
+    [paginator]="true"
+    [rows]="5"
+    [rowsPerPageOptions]="[5, 10, 20]"
     dataKey="id">
     <ng-template pTemplate="header">
       <tr>
@@ -33,11 +35,11 @@
         <td>{{ teacher.name }}</td>
         <td>{{ teacher.email }}</td>
         <td>
-          <img
+          <p-image
             [src]="teacher.photoURL"
-            [alt]="teacher.name"
-            width="50"
-            class="shadow-4"/>
+            [alt]="'Foto de perfil de ' + teacher.name"
+            width="60"
+            height="auto"/>
         </td>
         <td>
           <p-button
@@ -47,14 +49,14 @@
             [rounded]="true"
             [outlined]="true"
             severity="success"
-            (click)="editTeacher(teacher)"/>
+            (click)="handleEdit(teacher)"/>
           <p-button
             pRipple
             icon="pi pi-trash"
             severity="danger"
             [rounded]="true"
             [outlined]="true"
-            (click)="deleteTeacher(teacher, $event)"/>
+            (click)="handleDelete(teacher, $event)"/>
         </td>
       </tr>
     </ng-template>
@@ -64,6 +66,6 @@
 <app-form-dialog
   [isVisible]="isModalVisible()"
   [teacher]="selectedTeacher()"
-  (onSave)="createTeacher($event)"
+  (onSave)="handleSave($event)"
   (onClose)="closeDialog()"
 />

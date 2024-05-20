@@ -1,0 +1,26 @@
+<div class="flex justify-content-center">
+  <p-image
+    [src]="selectedFileURL ?? 'assets/images/default_user.jpg'"
+    alt="Foto de perfil"
+    width="150"
+    height="auto"/>
+</div>
+
+<div class="flex justify-content-center my-3">
+  <p-fileUpload
+    mode="basic"
+    chooseLabel="Seleccionar foto"
+    chooseIcon="pi pi-upload"
+    name="demo[]"
+    accept="image/*"
+    maxFileSize="1000000"
+    [fileLimit]="1"
+    invalidFileSizeMessageSummary="{0}"
+    invalidFileSizeMessageDetail="El tamaño del archivo es demasiado grande, el tamaño máximo es {0}."
+    invalidFileTypeMessageSummary="{0} Tipo de archivo inválido"
+    invalidFileTypeMessageDetail="Los tipos de archivo válidos son {0}."
+    invalidFileLimitMessageSummary="{0}"
+    invalidFileLimitMessageDetail="Solo se pueden subir {0} archivos."
+    (onSelect)="handleUpload($event)">
+  </p-fileUpload>
+</div>

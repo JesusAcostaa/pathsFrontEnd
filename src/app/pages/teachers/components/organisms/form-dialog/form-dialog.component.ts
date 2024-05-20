@@ -1,4 +1,11 @@
-import { Component, Input, input, OnChanges, OnInit, output } from '@angular/core';
+import {
+  Component,
+  input,
+  OnChanges,
+  OnDestroy,
+  output,
+  signal,
+} from '@angular/core';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { InputTextModule } from 'primeng/inputtext';
@@ -10,9 +17,14 @@ import {
   Validators,
 } from '@angular/forms';
 import { RippleModule } from 'primeng/ripple';
-import { JsonPipe, NgIf, NgOptimizedImage } from '@angular/common';
+import { CommonModule } from '@angular/common';
 
-import { UserInformation, UserRoles } from '../../../../../core/interfaces';
+import {
+  UserInformation,
+  UserRoles,
+  FormDialogParams,
+} from '../../../../../core/interfaces';
+import { ProfilePictureComponent } from '../../molecules/profile-picture/profile-picture.component';
 
 const DEFAULT_IMAGE =
   'https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg?size=626&ext=jpg&ga=GA1.1.967060102.1715817600&semt=ais_user';
@@ -22,24 +34,25 @@ const DEFAULT_IMAGE =
   selector: 'app-form-dialog',
   templateUrl: './form-dialog.component.html',
   imports: [
+    CommonModule,
     DialogModule,
     InputTextareaModule,
     InputTextModule,
     ButtonModule,
     RippleModule,
-    NgIf,
     ReactiveFormsModule,
-    JsonPipe,
-    NgOptimizedImage,
+    ProfilePictureComponent,
   ],
   styleUrl: './form-dialog.component.css',
 })
-export class FormDialogComponent implements OnChanges {
-  public onSave = output<UserInformation>();
+export class FormDialogComponent implements OnChanges, OnDestroy {
   public onClose = output<void>();
+  public onSave = output<FormDialogParams>();
 
   public isVisible = input(false);
   public teacher = input<UserInformation>();
+
+  private selectedFile = signal<File | null>(null);
 
   public form = new FormGroup({
     name: new FormControl('', [Validators.required]),
@@ -58,18 +71,26 @@ export class FormDialogComponent implements OnChanges {
   }
 
   public handleSave() {
-    this.onSave.emit(this.form.getRawValue() as UserInformation);
+    const user = this.form.getRawValue() as UserInformation;
+    const file = this.selectedFile() || new File([], '');
+    this.onSave.emit({
+      user,
+      file,
+    });
   }
 
   public resetForm() {
-    console.log('reset')
     this.form.patchValue({
       name: '',
       email: '',
       photoURL: DEFAULT_IMAGE,
       role: UserRoles.Teacher,
       id: '',
-    })
+    });
+  }
+
+  public handleSelectedPicture(file: File) {
+    this.selectedFile.set(file);
   }
 
   get name() {
@@ -94,5 +115,9 @@ export class FormDialogComponent implements OnChanges {
 
   private isRequired(control: FormControl) {
     return control.hasError('required') && control.touched;
+  }
+
+  ngOnDestroy() {
+    this.selectedFile.set(new File([], ''));
   }
 }

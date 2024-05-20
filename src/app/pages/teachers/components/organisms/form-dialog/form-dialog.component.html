@@ -1,21 +1,14 @@
 <p-dialog
   [visible]="isVisible()"
   (visibleChange)="onClose.emit()"
+  (onHide)="ngOnDestroy()"
   [style]="{ width: '450px' }"
   header="Datos del profesor"
   [modal]="true"
   styleClass="p-fluid">
   <ng-template pTemplate="content">
     <form [formGroup]="form">
-      @if (teacher()) {
-        <img
-          [ngSrc]="teacher()?.photoURL ?? ''"
-          [alt]="teacher()?.photoURL ?? ''"
-          width="200"
-          height="210"
-          class="block m-auto pb-3"
-        />
-      }
+      <app-profile-picture [teacher]="teacher()" (onSelect)="handleSelectedPicture($event)"/>
 
       <div class="field">
         <label for="name">Nombre</label>
@@ -27,9 +20,11 @@
           aria-describedby="username"
           required
           autofocus/>
-        <small *ngIf="isRequiredName" class="text-red-500" id="username">
-          Campo requerido
-        </small>
+        @if (isRequiredName) {
+          <small class="text-red-500" id="username">
+            Campo requerido
+          </small>
+        }
       </div>
 
       <div class="field">
@@ -40,22 +35,17 @@
           formControlName="email"
           aria-describedby="userEmail"
           required/>
-        <small *ngIf="isRequiredEmail" class="text-red-500" id="userEmail">
-          Campo requerido
-        </small>
+        @if (isRequiredEmail) {
+          <small class="text-red-500" id="userEmail">
+            Campo requerido
+          </small>
+        }
 
-        <small *ngIf="isInvalidEmail" class="text-red-500">
-          Ingresa un correo válido
-        </small>
-      </div>
-
-      <div class="field">
-        <label for="photoURL">Picture</label>
-        <input
-          id="photoURL"
-          pInputText
-          formControlName="photoURL"
-        />
+        @if (isInvalidEmail) {
+          <small class="text-red-500">
+            Ingresa un correo válido
+          </small>
+        }
       </div>
 
       <div class="field">

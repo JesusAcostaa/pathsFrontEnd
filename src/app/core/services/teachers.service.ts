@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import {
   addDoc,
   collection,
@@ -12,9 +12,8 @@ import {
   updateDoc,
   where,
 } from '@angular/fire/firestore';
-import { FirebaseUtils } from '../../shared/utils';
 import { UserInformation } from '../interfaces';
-import { lastValueFrom, Observable } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 
 const PATH = 'teachers';
 
@@ -25,15 +24,19 @@ export class TeachersService {
   private _firestore = inject(Firestore);
   private _collection = collection(this._firestore, PATH);
 
+  public teachers = signal<UserInformation[]>([]);
+
   async getByEmail(id: string) {
     const snapshot = await getDoc(this.document(id));
     return snapshot.data() as UserInformation;
   }
 
-  public getAll() {
-    return collectionData(this._collection, { idField: 'id' }) as Observable<
-      UserInformation[]
-    >;
+  public async getAll() {
+    const collection = collectionData(this._collection, {
+      idField: 'id',
+    }) as Observable<UserInformation[]>;
+
+    this.teachers.set(await firstValueFrom(collection));
   }
 
   async searchByQuery(name: string) {
@@ -51,14 +54,23 @@ export class TeachersService {
   }
 
   async add(teacher: UserInformation) {
-    return await addDoc(this._collection, teacher);
+    console.log(teacher)
+    await addDoc(this._collection, { ...teacher });
+    this.teachers.update(teachers => teachers.concat(teacher));
   }
 
   async update(teacher: UserInformation) {
-    return updateDoc(this.document(teacher.id), { ...teacher });
+    await updateDoc(this.document(teacher.id), { ...teacher });
+
+    const index = this.teachers().findIndex(t => t.id === teacher.id);
+    this.teachers.update(teachers => {
+      teachers[index] = teacher;
+      return teachers;
+    });
   }
 
   async delete(id: string) {
+    this.teachers.update(teachers => teachers.filter(t => t.id !== id));
     return deleteDoc(this.document(id));
   }
 

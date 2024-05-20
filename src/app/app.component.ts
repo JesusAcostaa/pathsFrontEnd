@@ -7,9 +7,9 @@ import { LayoutComponent } from './core/layout/layout.component';
 import { NotFoundComponent } from './shared/components/not-found/not-found.component';
 import { ToastModule } from 'primeng/toast';
 import { LoaderComponent } from './shared/components/loader/loader.component';
-import { RouterOutlet } from "@angular/router";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { CommonModule } from "@angular/common";
+import { RouterOutlet } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -32,6 +32,7 @@ import { CommonModule } from "@angular/common";
 export class AppComponent implements OnInit {
   private _firestore = inject(Firestore);
   private _collection = collection(this._firestore, 'users');
+  private httpClient = inject(HttpClient);
 
   ngOnInit() {
     const menu = {
