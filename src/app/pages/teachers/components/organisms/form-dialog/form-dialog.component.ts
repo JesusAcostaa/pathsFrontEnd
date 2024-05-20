@@ -1,5 +1,6 @@
 import {
   Component,
+  inject,
   input,
   OnChanges,
   OnDestroy,
@@ -20,11 +21,13 @@ import { RippleModule } from 'primeng/ripple';
 import { CommonModule } from '@angular/common';
 
 import {
+  FormDialogParams,
   UserInformation,
   UserRoles,
-  FormDialogParams,
 } from '../../../../../core/interfaces';
 import { ProfilePictureComponent } from '../../molecules/profile-picture/profile-picture.component';
+import { userEmailValidator } from '../../../../../shared/utils';
+import { TeachersService } from '../../../../../core/services';
 
 const DEFAULT_IMAGE =
   'https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg?size=626&ext=jpg&ga=GA1.1.967060102.1715817600&semt=ais_user';
@@ -53,10 +56,14 @@ export class FormDialogComponent implements OnChanges, OnDestroy {
   public teacher = input<UserInformation>();
 
   private selectedFile = signal<File | null>(null);
+  private readonly teacherService = inject(TeachersService);
 
   public form = new FormGroup({
     name: new FormControl('', [Validators.required]),
-    email: new FormControl('', [Validators.required, Validators.email]),
+    email: new FormControl('', {
+      validators: [Validators.required, Validators.email],
+      asyncValidators: userEmailValidator(this.teacherService),
+    }),
     photoURL: new FormControl({ value: DEFAULT_IMAGE, disabled: false }, [
       Validators.required,
     ]),
@@ -111,6 +118,10 @@ export class FormDialogComponent implements OnChanges, OnDestroy {
 
   get isInvalidEmail() {
     return this.email.hasError('email') && this.email.touched;
+  }
+
+  get isEmailAvailable() {
+    return this.email.hasError('emailTaken') && this.email.touched;
   }
 
   private isRequired(control: FormControl) {

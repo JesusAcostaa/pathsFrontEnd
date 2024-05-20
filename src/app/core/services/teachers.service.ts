@@ -26,9 +26,12 @@ export class TeachersService {
 
   public teachers = signal<UserInformation[]>([]);
 
-  async getByEmail(id: string) {
-    const snapshot = await getDoc(this.document(id));
-    return snapshot.data() as UserInformation;
+  async isEmailAvailable(email: string): Promise<boolean> {
+    const querySnapshot = await getDocs(
+      query(this._collection, where('email', '==', email))
+    );
+
+    return querySnapshot.empty;
   }
 
   public async getAll() {
@@ -54,7 +57,6 @@ export class TeachersService {
   }
 
   async add(teacher: UserInformation) {
-    console.log(teacher)
     await addDoc(this._collection, { ...teacher });
     this.teachers.update(teachers => teachers.concat(teacher));
   }

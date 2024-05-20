@@ -46,6 +46,12 @@
             Ingresa un correo válido
           </small>
         }
+
+        @if(isEmailAvailable) {
+          <small class="text-red-500">
+            Este correo ya está en uso
+          </small>
+        }
       </div>
 
       <div class="field">
