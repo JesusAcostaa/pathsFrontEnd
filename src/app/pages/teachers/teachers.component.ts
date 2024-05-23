@@ -4,8 +4,8 @@ import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { RippleModule } from 'primeng/ripple';
 import { CardModule } from 'primeng/card';
-import { FormDialogComponent, ProfilePictureComponent } from './components';
-import { FormDialogParams, UserInformation } from '../../core/interfaces';
+import { FormDialogComponent, ProfilePictureComponent } from '../../shared/components';
+import { FormDialogParams, UserInformation, UserRoles } from '../../core/interfaces';
 import {
   LoaderService,
   TeachersService,

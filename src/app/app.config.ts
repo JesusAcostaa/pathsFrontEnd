@@ -1,5 +1,5 @@
 import { provideRouter } from '@angular/router';
-import { ApplicationConfig } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getStorage, provideStorage } from '@angular/fire/storage';

@@ -3,12 +3,12 @@
   (visibleChange)="onClose.emit()"
   (onHide)="ngOnDestroy()"
   [style]="{ width: '450px' }"
-  header="Datos del profesor"
+  [header]="title()"
   [modal]="true"
   styleClass="p-fluid">
   <ng-template pTemplate="content">
     <form [formGroup]="form">
-      <app-profile-picture [teacher]="teacher()" (onSelect)="handleSelectedPicture($event)"/>
+      <app-profile-picture [user]="user()" (onSelect)="handleSelectedPicture($event)"/>
 
       <div class="field">
         <label for="name">Nombre</label>

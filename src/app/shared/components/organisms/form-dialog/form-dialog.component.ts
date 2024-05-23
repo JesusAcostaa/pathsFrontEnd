@@ -4,6 +4,7 @@ import {
   input,
   OnChanges,
   OnDestroy,
+  OnInit,
   output,
   signal,
 } from '@angular/core';
@@ -24,10 +25,10 @@ import {
   FormDialogParams,
   UserInformation,
   UserRoles,
-} from '../../../../../core/interfaces';
+} from '../../../../core/interfaces';
 import { ProfilePictureComponent } from '../../molecules/profile-picture/profile-picture.component';
-import { userEmailValidator } from '../../../../../shared/utils';
-import { TeachersService } from '../../../../../core/services';
+import { userEmailValidator } from '../../../utils';
+import { TeachersService } from '../../../../core/services';
 
 const DEFAULT_IMAGE =
   'https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg?size=626&ext=jpg&ga=GA1.1.967060102.1715817600&semt=ais_user';
@@ -48,12 +49,14 @@ const DEFAULT_IMAGE =
   ],
   styleUrl: './form-dialog.component.css',
 })
-export class FormDialogComponent implements OnChanges, OnDestroy {
+export class FormDialogComponent implements OnInit, OnChanges, OnDestroy {
   public onClose = output<void>();
   public onSave = output<FormDialogParams>();
 
   public isVisible = input(false);
-  public teacher = input<UserInformation>();
+  public user = input<UserInformation>();
+  public role = input<UserRoles>(UserRoles.Teacher);
+  public title = input<string>('Datos del profesor');
 
   private selectedFile = signal<File | null>(null);
   private readonly teacherService = inject(TeachersService);
@@ -67,13 +70,19 @@ export class FormDialogComponent implements OnChanges, OnDestroy {
     photoURL: new FormControl({ value: DEFAULT_IMAGE, disabled: false }, [
       Validators.required,
     ]),
-    role: new FormControl({ value: UserRoles.Teacher, disabled: true }),
+    role: new FormControl({ value: this.role(), disabled: true }),
     id: new FormControl(''),
   });
 
+  ngOnInit() {
+    this.form.patchValue({
+      role: this.role(),
+    });
+  }
+
   ngOnChanges() {
-    if (this.teacher()) {
-      this.form.patchValue(this.teacher() as Partial<UserInformation>);
+    if (this.user()) {
+      this.form.patchValue(this.user() as Partial<UserInformation>);
     }
   }
 
@@ -91,7 +100,7 @@ export class FormDialogComponent implements OnChanges, OnDestroy {
       name: '',
       email: '',
       photoURL: DEFAULT_IMAGE,
-      role: UserRoles.Teacher,
+      role: this.role(),
       id: '',
     });
   }

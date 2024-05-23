@@ -1,6 +1,6 @@
 import { Component, input, OnInit, output, signal, ViewChild } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
-import { UserInformation } from '../../../../../core/interfaces';
+import { UserInformation } from '../../../../core/interfaces';
 import { FileUpload, FileUploadModule } from 'primeng/fileupload';
 import { FileSelectEvent } from 'primeng/fileupload/fileupload.interface';
 import { ImageModule } from 'primeng/image';
@@ -16,7 +16,7 @@ const DEFAULT_IMAGE_NAME = 'default_user.jpg';
   styleUrl: './profile-picture.component.css',
 })
 export class ProfilePictureComponent implements OnInit {
-  public teacher = input<UserInformation>();
+  public user = input<UserInformation>();
   public onSelect = output<File>();
 
   public selectedFileURL: string | undefined = undefined;
@@ -24,7 +24,7 @@ export class ProfilePictureComponent implements OnInit {
   @ViewChild(FileUpload) fileUpload!: FileUpload;
 
   async ngOnInit() {
-    this.selectedFileURL = this.teacher()?.photoURL;
+    this.selectedFileURL = this.user()?.photoURL;
     if (!this.selectedFileURL) {
       const defaultFile = await this.getDefaultFile();
       this.onSelect.emit(defaultFile);
