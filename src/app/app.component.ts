@@ -9,6 +9,7 @@ import { ToastModule } from 'primeng/toast';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { FileService } from "./core/services/file.service";
 
 @Component({
   selector: 'app-root',
@@ -33,7 +34,10 @@ export class AppComponent implements OnInit {
   private _collection = collection(this._firestore, 'users');
   private httpClient = inject(HttpClient);
 
-  ngOnInit() {
+  private fileService = inject(FileService);
+
+  async ngOnInit() {
+    //console.log(await this.fileService.getAllImages());
     const menu = {
       menu: 'roles/3tZm2tg3aH9CjvaS19d3',
       photoURL:

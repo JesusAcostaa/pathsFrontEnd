@@ -1,1 +1,106 @@
-<p class="m-0">resources works!</p>
+<h1 class="text-primary">
+  Agregar recursos a rutas de aprendizaje
+</h1>
+
+<p-dropdown
+  [options]="learningRoutes"
+  [formControl]="learningRoute"
+  optionLabel="name"
+  placeholder="Selecciona el estado de aprendizaje"/>
+
+<div class="card mt-3">
+  <p-fileUpload
+    name="myfile[]"
+    [multiple]="true"
+    [fileLimit]="3"
+    accept="image/*,video/*"
+    maxFileSize="5000000"
+    invalidFileSizeMessageSummary="{0}"
+    invalidFileSizeMessageDetail="El tamaño del archivo es demasiado grande, el tamaño máximo es {0}."
+    invalidFileTypeMessageSummary="{0} Tipo de archivo inválido"
+    invalidFileTypeMessageDetail="Los tipos de archivo válidos son {0}."
+    invalidFileLimitMessageSummary="{0}"
+    invalidFileLimitMessageDetail="Solo se pueden subir {0} archivos."
+    (onSelect)="onSelectedFiles($event)"
+  >
+    <ng-template
+      pTemplate="header"
+      let-files
+      let-chooseCallback="chooseCallback"
+      let-clearCallback="clearCallback"
+    >
+      <div
+        class="flex flex-wrap justify-content-between align-items-center flex-1 gap-2"
+      >
+        <div class="flex gap-2">
+          <p-button
+            (onClick)="choose($event, chooseCallback)"
+            icon="pi pi-images"
+            [rounded]="true"
+            [outlined]="true"
+          />
+          <p-button
+            (onClick)="uploadEvent()"
+            icon="pi pi-cloud-upload"
+            [rounded]="true"
+            [outlined]="true"
+            severity="success"
+            [disabled]="!files || files.length === 0 || learningRoute.invalid"
+          />
+          <p-button
+            (onClick)="clearCallback()"
+            icon="pi pi-times"
+            [rounded]="true"
+            [outlined]="true"
+            severity="danger"
+            [disabled]="!files || files.length === 0"
+          />
+        </div>
+      </div>
+    </ng-template>
+    <ng-template
+      pTemplate="content"
+      let-files
+      let-removeFileCallback="removeFileCallback"
+    >
+      <div *ngIf="files?.length > 0">
+        <div class="flex flex-wrap p-0 sm:p-5 gap-5">
+          <div
+            *ngFor="let file of files; let i = index"
+            class="card m-0 px-6 flex flex-column border-1 surface-border align-items-center gap-3"
+          >
+            <div>
+              <img
+                role="presentation"
+                [alt]="file.name"
+                [src]="file.objectURL ?? 'assets/images/video-logo.png'"
+                width="100"
+                height="100"
+              />
+            </div>
+            <span class="font-semibold">{{ file.name }}</span>
+            <div>{{ formatSize(file.size) }}</div>
+            <p-button
+              icon="pi pi-times"
+              (click)="
+                onRemoveTemplatingFile($event, removeFileCallback, i)
+              "
+              [outlined]="true"
+              [rounded]="true"
+              severity="danger"
+            />
+          </div>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="file"></ng-template>
+    <ng-template pTemplate="empty">
+      <div class="flex align-items-center justify-content-center flex-column">
+        <i
+          class="pi pi-cloud-upload border-2 border-circle p-5 text-8xl text-400 border-400"
+        ></i>
+        <p class="mt-4 mb-0">Arrastre y suelte archivos aquí para cargarlos.</p>
+      </div>
+    </ng-template>
+  </p-fileUpload>
+</div>

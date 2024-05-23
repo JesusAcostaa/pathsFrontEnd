@@ -14,8 +14,10 @@ import {
 } from '@angular/fire/firestore';
 import { UserInformation } from '../interfaces';
 import { firstValueFrom, Observable } from 'rxjs';
+import { FirebaseUtils } from '../../shared/utils';
 
-const PATH = 'students';
+const PATH = 'users';
+const MENU_PATH = 'roles/3tZm2tg3aH9CjvaS19d3';
 
 @Injectable({
   providedIn: 'root',
@@ -35,11 +37,12 @@ export class StudentsService {
   }
 
   public async getAll() {
-    const collection = collectionData(this._collection, {
-      idField: 'id',
-    }) as Observable<UserInformation[]>;
+    const querySnapshot = await getDocs(
+      query(this._collection, where('role', '==', 'STUDENT'))
+    );
 
-    this.students.set(await firstValueFrom(collection));
+    const students = FirebaseUtils.getDataFromQuery(querySnapshot);
+    this.students.set(students);
   }
 
   async searchByQuery(name: string) {
@@ -56,9 +59,22 @@ export class StudentsService {
     );
   }
 
-  async add(teacher: UserInformation) {
-    await addDoc(this._collection, { ...teacher });
-    this.students.update(teachers => teachers.concat(teacher));
+  async add({ email, name, role, photoURL }: UserInformation) {
+    const student = {
+      email,
+      name,
+      role,
+      photoURL,
+    };
+
+    const doc = await addDoc(this._collection, {
+      ...student,
+      menu: this.menuRef(),
+    });
+
+    this.students.update(students =>
+      students.concat({ ...student, id: doc.id })
+    );
   }
 
   async update(teacher: UserInformation) {
@@ -72,8 +88,12 @@ export class StudentsService {
   }
 
   async delete(id: string) {
+    await deleteDoc(this.document(id));
     this.students.update(teachers => teachers.filter(t => t.id !== id));
-    return deleteDoc(this.document(id));
+  }
+
+  private menuRef() {
+    return doc(this._firestore, MENU_PATH);
   }
 
   private document(id: string) {

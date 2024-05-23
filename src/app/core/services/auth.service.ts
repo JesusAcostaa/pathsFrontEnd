@@ -1,16 +1,16 @@
 import { inject, Injectable, signal } from '@angular/core';
 import {
   Auth,
+  createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signOut,
-  user,
 } from '@angular/fire/auth';
 import { from, of } from 'rxjs';
 import { UserInformation } from '../interfaces';
 import { UserService } from './user.service';
-import { Menu } from 'primeng/menu';
 
-const DELAY_LOGIN_TIME = 1000;
+const USER_ALREADY_EXISTS = 'auth/email-already-in-use';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +19,6 @@ export class AuthService {
   private _firebaseAuth = inject(Auth);
   private _userService = inject(UserService);
 
-  private user$ = user(this._firebaseAuth);
   public currentUser = signal<UserInformation | null>(null);
 
   public async login(email = '', password = '') {
@@ -30,6 +29,29 @@ export class AuthService {
     } catch (error) {
       return Promise.reject(error);
     }
+  }
+
+  public async createUser(email: string) {
+    try {
+      await createUserWithEmailAndPassword(
+        this._firebaseAuth,
+        email,
+        this.getRandomPassword()
+      );
+      await this.sendResetPasswordEmail(email);
+    } catch (error: any) {
+      if (error.code === USER_ALREADY_EXISTS) {
+        return this.sendResetPasswordEmail(email);
+      }
+    }
+  }
+
+  private async sendResetPasswordEmail(email: string) {
+    return await sendPasswordResetEmail(this._firebaseAuth, email);
+  }
+
+  private getRandomPassword() {
+    return Math.random().toString(36).slice(-8);
   }
 
   private updateCurrentUser(user: UserInformation) {

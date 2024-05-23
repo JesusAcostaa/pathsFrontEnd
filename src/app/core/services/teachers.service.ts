@@ -2,20 +2,19 @@ import { inject, Injectable, signal } from '@angular/core';
 import {
   addDoc,
   collection,
-  collectionData,
   deleteDoc,
   doc,
   Firestore,
-  getDoc,
   getDocs,
   query,
   updateDoc,
   where,
 } from '@angular/fire/firestore';
 import { UserInformation } from '../interfaces';
-import { firstValueFrom, Observable } from 'rxjs';
+import { FirebaseUtils } from '../../shared/utils';
 
-const PATH = 'teachers';
+const PATH = 'users';
+const MENU_PATH = 'roles/Ilyb4OUDgfzUmREuIR9t';
 
 @Injectable({
   providedIn: 'root',
@@ -35,11 +34,12 @@ export class TeachersService {
   }
 
   public async getAll() {
-    const collection = collectionData(this._collection, {
-      idField: 'id',
-    }) as Observable<UserInformation[]>;
+    const querySnapshot = await getDocs(
+      query(this._collection, where('role', '==', 'TEACHER'))
+    );
 
-    this.teachers.set(await firstValueFrom(collection));
+    const teachers = FirebaseUtils.getDataFromQuery(querySnapshot);
+    this.teachers.set(teachers);
   }
 
   async searchByQuery(name: string) {
@@ -56,9 +56,22 @@ export class TeachersService {
     );
   }
 
-  async add(teacher: UserInformation) {
-    await addDoc(this._collection, { ...teacher });
-    this.teachers.update(teachers => teachers.concat(teacher));
+  async add({ email, name, role, photoURL }: UserInformation) {
+    const teacher = {
+      email,
+      name,
+      role,
+      photoURL,
+    };
+
+    const doc = await addDoc(this._collection, {
+      ...teacher,
+      menu: this.menuRef(),
+    });
+
+    this.teachers.update(teachers =>
+      teachers.concat({ ...teacher, id: doc.id })
+    );
   }
 
   async update(teacher: UserInformation) {
@@ -72,8 +85,12 @@ export class TeachersService {
   }
 
   async delete(id: string) {
+    await deleteDoc(this.document(id));
     this.teachers.update(teachers => teachers.filter(t => t.id !== id));
-    return deleteDoc(this.document(id));
+  }
+
+  private menuRef() {
+    return doc(this._firestore, MENU_PATH);
   }
 
   private document(id: string) {

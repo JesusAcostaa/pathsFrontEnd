@@ -1,9 +1,13 @@
 import { Component, inject, OnInit, signal, viewChild } from '@angular/core';
 import { FormDialogComponent } from '../../shared/components';
 import { FileService } from '../../core/services/file.service';
-import { LoaderService, ToastService } from '../../core/services';
+import { AuthService, LoaderService, ToastService } from '../../core/services';
 import { ConfirmationService } from 'primeng/api';
-import { FormDialogParams, UserInformation, UserRoles } from '../../core/interfaces';
+import {
+  FormDialogParams,
+  UserInformation,
+  UserRoles,
+} from '../../core/interfaces';
 import { HasLoaderService, withLoader } from '../../core/decorartors';
 import { TOAST_MESSAGES } from '../teachers/constants';
 import { StudentsService } from '../../core/services/students.service';
@@ -34,11 +38,13 @@ import { ImageModule } from 'primeng/image';
 export class StudentsComponent implements OnInit, HasLoaderService {
   public formDialog = viewChild(FormDialogComponent);
 
+  private authService = inject(AuthService);
   private fileService = inject(FileService);
   private toastService = inject(ToastService);
-  readonly loaderService = inject(LoaderService);
   private studentsService = inject(StudentsService);
   private confirmationService = inject(ConfirmationService);
+
+  readonly loaderService = inject(LoaderService);
 
   public isModalVisible = signal(false);
   public selectedTeacher = signal<UserInformation | undefined>(undefined);
@@ -92,7 +98,13 @@ export class StudentsComponent implements OnInit, HasLoaderService {
       photoURL: url,
     });
     this.closeDialog();
+    await this.createAuthUser(user.email);
+
     this.toastService.showSuccess(TOAST_MESSAGES.created);
+  }
+
+  private async createAuthUser(email: string) {
+    await this.authService.createUser(email);
   }
 
   @withLoader()

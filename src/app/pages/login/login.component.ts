@@ -10,6 +10,7 @@ import {
 } from '@angular/forms';
 import { AuthService, ToastService, LoaderService } from '../../core/services';
 import { ButtonModule } from 'primeng/button';
+import { UserRoles } from '../../core/interfaces';
 
 interface LoginForm {
   email: FormControl<string>;
@@ -39,6 +40,12 @@ export class LoginComponent implements OnInit {
     'auth/invalid-credential': 'Correo o contraseña inválidos',
   };
 
+  private routesByRole: Record<string, string> = {
+    [UserRoles.Admin]: '/inicio',
+    [UserRoles.Teacher]: '/inicio/gestion-estudiantes',
+    [UserRoles.Student]: '/inicio/rutas-aprendizaje',
+  };
+
   ngOnInit() {
     this.loginForm = new FormGroup<LoginForm>({
       email: new FormControl('', {
@@ -58,8 +65,13 @@ export class LoginComponent implements OnInit {
     this.loaderService.show();
     this.authService
       .login(email, password)
-      .then(data => {
-        this.router.navigateByUrl('/inicio');
+      .then(() => {
+        const role = this.authService.currentUser()?.role;
+
+        if (role) {
+          const route = this.routesByRole[role];
+          this.router.navigateByUrl(route);
+        }
       })
       .catch(error => {
         this.handleLoginError(error.code);
