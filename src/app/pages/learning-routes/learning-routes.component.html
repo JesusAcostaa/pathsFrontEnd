@@ -1,1 +1,15 @@
-<p class="m-0">learning-routes works!</p>
+<section class="flex justify-content-center align-items-center h-full">
+  <div class="text-center">
+    <h1 class="text-primary text-2xl">
+      ¡Bienvenid&#64; {{ user()?.name }}!
+    </h1>
+
+    <h2 class="text-color-secondary text-4xl">
+      Proximamente...
+    </h2>
+
+    <div style="width: 500px; height: 300px">
+      <ng-lottie [options]="options"></ng-lottie>
+    </div>
+  </div>
+</section>

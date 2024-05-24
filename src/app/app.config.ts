@@ -13,6 +13,8 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 
 import { routes } from './app-routes';
 import { environment } from '../environments/environments';
+import { provideLottieOptions } from "ngx-lottie";
+import player from 'lottie-web';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -26,6 +28,9 @@ export const appConfig: ApplicationConfig = {
     provideFirestore(() => getFirestore()),
     provideFunctions(() => getFunctions()),
     provideStorage(() => getStorage()),
+    provideLottieOptions({
+      player: () => player,
+    }),
     { provide: FIREBASE_OPTIONS, useValue: environment.firebase },
   ],
 };
