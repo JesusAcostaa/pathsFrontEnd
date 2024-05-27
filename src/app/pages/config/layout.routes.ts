@@ -31,9 +31,9 @@ export const layoutRoutes: Routes = [
       },
       {
         path: 'rutas-aprendizaje',
-        loadComponent: () =>
-          import('../learning-routes/learning-routes.component').then(
-            mod => mod.LearningRoutesComponent
+        loadChildren: () =>
+          import('../learning-routes/config/learning-paths.routes').then(
+            mod => mod.learningPathsRoutes
           ),
       },
     ],

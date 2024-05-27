@@ -1,0 +1,85 @@
+<div class="container">
+  <header>
+    <h1 class="text-5xl">Juego de Memoria</h1>
+  </header>
+
+  <section class="score-panel">
+    <ul class="stars">
+      <li><i class="fa fa-star one"></i></li>
+      <li><i class="fa fa-star two"></i></li>
+      <li><i class="fa fa-star three"></i></li>
+    </ul>
+
+    <div class="movesCounter"><span class="moves">3</span> Movimientos!</div>
+
+    <div class="timer"></div>
+
+    <div class="restart">
+      <i class="fa fa-repeat"></i>
+    </div>
+  </section>
+
+  <ul class="deck">
+    <li class="card">
+      <i class="fa fa-diamond"></i>
+    </li>
+    <li class="card">
+      <i class="fa fa-paper-plane-o"></i>
+    </li>
+    <li class="card">
+      <i class="fa fa-anchor"></i>
+    </li>
+    <li class="card">
+      <i class="fa fa-bolt"></i>
+    </li>
+    <li class="card">
+      <i class="fa fa-cube"></i>
+    </li>
+    <li class="card">
+      <i class="fa fa-anchor"></i>
+    </li>
+    <li class="card">
+      <i class="fa fa-leaf"></i>
+    </li>
+    <li class="card">
+      <i class="fa fa-bicycle"></i>
+    </li>
+    <li class="card">
+      <i class="fa fa-diamond"></i>
+    </li>
+    <li class="card">
+      <i class="fa fa-bomb"></i>
+    </li>
+    <li class="card">
+      <i class="fa fa-leaf"></i>
+    </li>
+    <li class="card">
+      <i class="fa fa-bomb"></i>
+    </li>
+    <li class="card">
+      <i class="fa fa-bolt"></i>
+    </li>
+    <li class="card">
+      <i class="fa fa-bicycle"></i>
+    </li>
+    <li class="card">
+      <i class="fa fa-paper-plane-o"></i>
+    </li>
+    <li class="card">
+      <i class="fa fa-cube"></i>
+    </li>
+  </ul>
+
+  <div class="modal">
+    <div class="modal-content">
+      <div class="icon">
+        <ng-lottie [options]="options"></ng-lottie>
+      </div>
+      <span class="end-msg text-4xl"> ¡¡Felicitaciones 🎉!! </span>
+      <p class='stats text-2xl'></p>
+      <div class="flex gap-4 justify-content-center pt-3">
+        <button pButton id="play-again">Jugar de nuevo!</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -8,4 +8,5 @@ export const authenticationGuard = () => {
   const router = inject(Router);
 
   return true;
+
 };

@@ -1,0 +1,18 @@
+<p-tabView
+  id="closableTabView"
+  (onChange)="showMemoryGame.set(!showMemoryGame())"
+>
+  <p-tabPanel header="Memoria" rightIcon="pi pi-face-smile"
+  >
+    <ng-template pTemplate="content">
+      <section class="flex justify-content-center align-items-center h-full">
+        <app-memory-card-game *ngIf="showMemoryGame()"/>
+      </section>
+    </ng-template>
+  </p-tabPanel>
+  <p-tabPanel header="Puzzle" rightIcon="pi pi-objects-column">
+    <ng-template pTemplate="content">
+      <app-puzzle-game/>
+    </ng-template>
+  </p-tabPanel>
+</p-tabView>
