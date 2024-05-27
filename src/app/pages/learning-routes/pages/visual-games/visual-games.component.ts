@@ -26,4 +26,12 @@ import { TabMenuModule } from 'primeng/tabmenu';
 })
 export class VisualGamesComponent {
   public showMemoryGame = signal(true);
+
+  public hideMemoryGame() {
+    console.log('hideMemoryGame')
+    this.showMemoryGame.set(false);
+    setTimeout(() => {
+      this.showMemoryGame.set(true);
+    }, 100);
+  }
 }

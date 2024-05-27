@@ -78,7 +78,7 @@
       <span class="end-msg text-4xl"> ¡¡Felicitaciones 🎉!! </span>
       <p class='stats text-2xl'></p>
       <div class="flex gap-4 justify-content-center pt-3">
-        <button pButton id="play-again">Jugar de nuevo!</button>
+        <button pButton id="play-again" (click)="onReset.emit()">Jugar de nuevo!</button>
       </div>
     </div>
   </div>

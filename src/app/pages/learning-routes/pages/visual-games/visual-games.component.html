@@ -6,7 +6,7 @@
   >
     <ng-template pTemplate="content">
       <section class="flex justify-content-center align-items-center h-full">
-        <app-memory-card-game *ngIf="showMemoryGame()"/>
+        <app-memory-card-game *ngIf="showMemoryGame()" (onReset)="hideMemoryGame()"/>
       </section>
     </ng-template>
   </p-tabPanel>
