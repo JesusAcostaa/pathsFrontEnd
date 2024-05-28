@@ -1,0 +1,7 @@
+<p-tabView id="closableTabView">
+  <p-tabPanel header="Palabras homófonas" rightIcon="pi pi-megaphone">
+    <ng-template pTemplate="content">
+      <app-homophone-challenge [homophoneQuestions]="homophoneQuestions()" />
+    </ng-template>
+  </p-tabPanel>
+</p-tabView>

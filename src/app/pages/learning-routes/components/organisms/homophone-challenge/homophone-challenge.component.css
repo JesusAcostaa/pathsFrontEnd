@@ -1,0 +1,18 @@
+h1 {
+  font-family: 'Slackey', cursive;
+  font-weight: 400;
+  text-shadow: 2px 2px 22px rgb(103 197 221);
+  color: #4c9cea;
+}
+
+.card-question {
+  width: 75px;
+  height: 75px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-user-select: none;
+  user-select: none;
+  padding: 0;
+  border-radius: 10px;
+}

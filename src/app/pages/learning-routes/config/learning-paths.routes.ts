@@ -13,6 +13,11 @@ export const learningPathsRoutes: Routes = [
         loadComponent: () =>
           import('../pages').then(mod => mod.VisualGamesComponent),
       },
+      {
+        path: 'juegos-auditivos',
+        loadComponent: () =>
+          import('../pages').then(mod => mod.AuditoryGamesComponent),
+      }
     ],
   },
 ];

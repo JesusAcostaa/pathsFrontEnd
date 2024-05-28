@@ -10,6 +10,7 @@ import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { FileService } from "./core/services/file.service";
+import { PrimeNGConfig } from "primeng/api";
 
 @Component({
   selector: 'app-root',
@@ -35,8 +36,10 @@ export class AppComponent implements OnInit {
   private httpClient = inject(HttpClient);
 
   private fileService = inject(FileService);
+  primeConfig = inject(PrimeNGConfig)
 
   async ngOnInit() {
+    this.primeConfig.ripple = true;
     //console.log(await this.fileService.getAllImages());
     const menu = {
       menu: 'roles/3tZm2tg3aH9CjvaS19d3',

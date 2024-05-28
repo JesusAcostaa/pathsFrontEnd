@@ -1,0 +1,49 @@
+<section>
+  <p-card>
+    <ng-template pTemplate="header">
+      <h1 class="px-4 pt-1">¡Reproduce el sonido! 🔊</h1>
+    </ng-template>
+    <audio controls [src]="question().audio" class="w-full"></audio>
+
+    <div
+      class="flex gap-3 user mt-3"
+      [class.pointer-events-none]="isOptionSelected()"
+    >
+      @for (option of question().options; track option.word) {
+        <div
+          pRipple
+          class="card-question styled-box-green shadow-2 bg-black-alpha-20"
+          [ngClass]="{
+            'bg-black-alpha-20': !option.selected,
+            'bg-green-300': option.selected,
+            'bg-red-300': option.selected && !option.correct
+          }"
+          (click)="handleOptionClick(option)"
+        >
+          <p class="text-white">{{ option.word | titlecase }}</p>
+        </div>
+      }
+    </div>
+
+    @if (isCorrectOption() === true) {
+      <div class="flex justify-center">
+        <p class="text-green-500 text-xl">¡Correcto! 🎉</p>
+      </div>
+    } @else if (isCorrectOption() === false) {
+      <div class="flex justify-center">
+        <p class="text-red-500 text-xl">¡Incorrecto! 😢</p>
+      </div>
+    }
+
+    <div class="flex justify-center mt-5">
+      <button
+        pButton
+        pRipple
+        class="styled-button-green"
+        (click)="generateRandomQuestion()"
+      >
+        Siguiente
+      </button>
+    </div>
+  </p-card>
+</section>
