@@ -91,10 +91,7 @@ export class FormDialogComponent implements OnInit, OnChanges, OnDestroy {
 
     if (this.isStudent) {
       // @ts-ignore
-      this.form.addControl(
-        'learningPath',
-        new FormControl('')
-      );
+      this.form.addControl('learningPath', new FormControl(''));
     }
   }
 
@@ -102,9 +99,9 @@ export class FormDialogComponent implements OnInit, OnChanges, OnDestroy {
     if (this.user()) {
       this.form.patchValue(this.user() as Partial<UserInformation>);
 
-      if (!this.user()?.learningPath) {
+      if (!this.user()?.learningPath && this.isStudent) {
         this.learningPath.disable();
-      } else {
+      } else if (this.isStudent) {
         this.learningPath.enable();
       }
     }
