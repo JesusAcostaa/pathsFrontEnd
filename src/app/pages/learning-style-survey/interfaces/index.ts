@@ -13,5 +13,5 @@ export interface LearningStyleSurvey {
 }
 
 export interface SurveyResult {
-  [key: string]: number;
+  [key: string]: number | string;
 }

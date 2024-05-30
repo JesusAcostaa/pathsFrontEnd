@@ -86,23 +86,27 @@ export class StudentsService {
   }
 
   async getLearningStyle(surveyResult: SurveyResult[]): Promise<LearningStyle> {
-    const mockResponse: LearningStyleResponse[] = [
-      { learningPath: 'VISUAL', status: 200 },
-      { learningPath: 'AUDITORY', status: 200 },
-      { learningPath: 'KINESTHETIC', status: 200 },
-      { learningPath: 'Unknown', status: 200 },
-    ];
+    const body = {
+      respuestas: surveyResult.reduce((acc, current) => {
+        const key = Object.keys(current)[0];
+        acc[key] = current[key].toString();
+        return acc;
+      }, {}),
+    };
 
-    const response = of(
-      mockResponse[Math.floor(Math.random() * mockResponse.length)]
-    ).pipe(
-      map(response => {
-        return {
-          ...response,
-          learningPath: mapLearningStyle[response.learningPath],
-        };
-      })
-    );
+    const response = this.httpClient
+      .post<LearningStyleResponse>(
+        'https://paths-backend.onrender.com/obtenerRuta',
+        body
+      )
+      .pipe(
+        map(response => {
+          return {
+            ...response,
+            learningPath: mapLearningStyle[response.learningPath],
+          };
+        })
+      );
 
     return lastValueFrom(response);
   }
