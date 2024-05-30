@@ -1,0 +1,125 @@
+@if (!isSurveyCompleted()) {
+  <div
+    class="card h-screen flex justify-content-center align-items-center flex-column"
+  >
+    <div class="mb-5 text-center">
+      <h1 class="text-primary">¡Bienvenido {{ currentUser()?.name }}!</h1>
+      <p class="text-xl">Para comenzar responde la siguiente encuesta 🚀</p>
+    </div>
+    <p-stepper [(activeStep)]="active">
+      @for (survey of surveys; track survey.question) {
+        <p-stepperPanel>
+          <ng-template
+            pTemplate="header"
+            let-onClick="onClick"
+            let-index="index"
+          >
+            <button
+              class="bg-transparent border-none inline-flex flex-column gap-2"
+            >
+              <span
+                class="border-round border-2 w-3rem h-3rem inline-flex align-items-center justify-content-center"
+                [ngClass]="{
+                  'bg-primary border-primary': index <= active || 0,
+                  'surface-border': index > active || 0
+                }"
+              >
+                {{ index + 1 }}
+              </span>
+            </button>
+          </ng-template>
+          <ng-template
+            pTemplate="content"
+            let-nextCallback="nextCallback"
+            let-prevCallback="prevCallback"
+          >
+            <h2 class="text-center mt-3 mb-3 text-4xl my-6 text-primary">
+              {{ survey.question }}
+            </h2>
+
+            <div class="flex justify-content-center gap-4 w-full">
+              @for (option of survey.options;
+                track option.label;
+                let i = $index) {
+                <div
+                  pRipple
+                  class="border-round-2xl p-3 shadow-2 hover:shadow-4 select-none"
+                  [class.border-3]="option.isClicked"
+                  [class.border-primary-400]="option.isClicked"
+                  (click)="handleSurveyOptionClick(option, i)"
+                >
+                  <div class="flex justify-content-center">
+                    <ng-lottie
+                      [options]="option.lottie"
+                      width="175px"
+                      height="175px"
+                    />
+                  </div>
+
+                  <p class="text-xl text-center mt-4">
+                    {{ option.label }}
+                  </p>
+                </div>
+              }
+            </div>
+
+            <div class="flex pt-4 justify-content-between">
+              @if (active > 0) {
+                <p-button
+                  (onClick)="prevCallback.emit()"
+                  label="Anterior"
+                  severity="secondary"
+                  icon="pi pi-arrow-left"
+                  iconPos="left"
+                />
+              } @else {
+                <div></div>
+              }
+
+              <p-button
+                (onClick)="nextCallback.emit(); handleNext()"
+                [label]="
+                  active === surveys.length - 1 ? '¡Finalizar!' : 'Siguiente'
+                "
+                icon="pi pi-arrow-right"
+                [disabled]="!isOptionSelected()"
+                iconPos="right"
+              />
+            </div>
+          </ng-template>
+        </p-stepperPanel>
+      }
+    </p-stepper>
+  </div>
+} @else {
+  <div
+    class="card h-screen flex justify-content-center align-items-center flex-column"
+  >
+    <div class="mb-5 text-center">
+      <h1 class="text-primary">¡Gracias por completar la encuesta!</h1>
+
+      <p class="text-xl">
+        Hemos identificado que tu estilo de aprendizaje es
+        <span class="font-bold text-2xl">{{ learningStyle()?.learningPath | formatLearningStyle }}</span>
+      </p>
+
+      <div class="flex justify-content-center">
+        <ng-lottie
+          [options]="{ path: './assets/lotties/learning-result.json' }"
+          width="400px"
+          height="400px"
+        />
+      </div>
+
+      <p class="text-xl mt-3">
+        Ahora puedes comenzar a explorar las rutas de aprendizaje 🚀
+      </p>
+    </div>
+    <p-button
+      label="Explorar rutas"
+      icon="pi pi-arrow-right"
+      iconPos="right"
+      (click)="navigateToLearningRoutes()"
+    />
+  </div>
+}

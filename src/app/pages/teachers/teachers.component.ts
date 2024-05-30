@@ -23,7 +23,7 @@ import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmationService } from 'primeng/api';
 import { HasLoaderService, withLoader } from '../../core/decorartors';
-import { TOAST_MESSAGES } from './constants';
+import { TOAST_MESSAGES_TEACHER } from './constants';
 import { FileService } from '../../core/services/file.service';
 import { ImageModule } from 'primeng/image';
 
@@ -107,7 +107,7 @@ export class TeachersComponent implements OnInit, HasLoaderService {
     this.closeDialog();
     await this.createAuthUser(user.email);
 
-    this.toastService.showSuccess(TOAST_MESSAGES.created);
+    this.toastService.showSuccess(TOAST_MESSAGES_TEACHER.created);
   }
 
   private async createAuthUser(email: string) {
@@ -123,13 +123,13 @@ export class TeachersComponent implements OnInit, HasLoaderService {
     });
 
     this.closeDialog();
-    this.toastService.showSuccess(TOAST_MESSAGES.updated);
+    this.toastService.showSuccess(TOAST_MESSAGES_TEACHER.updated);
   }
 
   @withLoader()
   private async deleteTeacher(id: string) {
     await this.teachersService.delete(id);
-    this.toastService.showSuccess(TOAST_MESSAGES.deleted);
+    this.toastService.showSuccess(TOAST_MESSAGES_TEACHER.deleted);
   }
 
   private async uploadTeacherImage(file: File) {

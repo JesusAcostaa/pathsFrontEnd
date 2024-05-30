@@ -2,22 +2,39 @@ import { inject, Injectable, signal } from '@angular/core';
 import {
   addDoc,
   collection,
-  collectionData,
   deleteDoc,
   doc,
   Firestore,
-  getDoc,
   getDocs,
   query,
   updateDoc,
   where,
 } from '@angular/fire/firestore';
-import { UserInformation } from '../interfaces';
-import { firstValueFrom, Observable } from 'rxjs';
+import { LearningRoutes, UserInformation } from '../interfaces';
 import { FirebaseUtils } from '../../shared/utils';
+import { SurveyResult } from '../../pages/learning-style-survey/interfaces';
+import { HttpClient } from '@angular/common/http';
+import { lastValueFrom, map, of } from 'rxjs';
 
 const PATH = 'users';
 const MENU_PATH = 'roles/3tZm2tg3aH9CjvaS19d3';
+
+interface LearningStyleResponse {
+  learningPath: 'VISUAL' | 'AUDITORY' | 'KINESTHETIC' | 'Unknown';
+  status: number;
+}
+
+export interface LearningStyle {
+  learningPath: LearningRoutes;
+  status: number;
+}
+
+const mapLearningStyle = {
+  VISUAL: LearningRoutes.Visual,
+  AUDITORY: LearningRoutes.Auditory,
+  KINESTHETIC: LearningRoutes.Kinesthetic,
+  Unknown: LearningRoutes.Mixed,
+};
 
 @Injectable({
   providedIn: 'root',
@@ -26,15 +43,9 @@ export class StudentsService {
   private _firestore = inject(Firestore);
   private _collection = collection(this._firestore, PATH);
 
+  private httpClient = inject(HttpClient);
+
   public students = signal<UserInformation[]>([]);
-
-  async isEmailAvailable(email: string): Promise<boolean> {
-    const querySnapshot = await getDocs(
-      query(this._collection, where('email', '==', email))
-    );
-
-    return querySnapshot.empty;
-  }
 
   public async getAll() {
     const querySnapshot = await getDocs(
@@ -43,20 +54,6 @@ export class StudentsService {
 
     const students = FirebaseUtils.getDataFromQuery(querySnapshot);
     this.students.set(students);
-  }
-
-  async searchByQuery(name: string) {
-    const querySnapshot = await getDocs(
-      query(
-        this._collection,
-        where('name', '>=', name),
-        where('name', '<=', name + '\uf8ff')
-      )
-    );
-
-    return querySnapshot.docs.map(
-      doc => ({ id: doc.id, ...doc.data() }) as UserInformation
-    );
   }
 
   async add({ email, name, role, photoURL }: UserInformation) {
@@ -85,6 +82,28 @@ export class StudentsService {
       teachers[index] = teacher;
       return teachers;
     });
+  }
+
+  async getLearningStyle(surveyResult: SurveyResult[]): Promise<LearningStyle> {
+    const mockResponse: LearningStyleResponse[] = [
+      { learningPath: 'VISUAL', status: 200 },
+      { learningPath: 'AUDITORY', status: 200 },
+      { learningPath: 'KINESTHETIC', status: 200 },
+      { learningPath: 'Unknown', status: 200 },
+    ];
+
+    const response = of(
+      mockResponse[Math.floor(Math.random() * mockResponse.length)]
+    ).pipe(
+      map(response => {
+        return {
+          ...response,
+          learningPath: mapLearningStyle[response.learningPath],
+        };
+      })
+    );
+
+    return lastValueFrom(response);
   }
 
   async delete(id: string) {

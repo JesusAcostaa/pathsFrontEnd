@@ -19,6 +19,13 @@ export const routes: Routes = [
       import('./pages/config/layout.routes').then(mod => mod.layoutRoutes),
   },
   {
+    path: 'encuesta-estilo-aprendizaje',
+    loadComponent: () =>
+      import(
+        './pages/learning-style-survey/learning-style-survey.component'
+      ).then(mod => mod.LearningStyleSurveyComponent),
+  },
+  {
     path: '**',
     loadComponent: () =>
       import('./shared/components/not-found/not-found.component').then(

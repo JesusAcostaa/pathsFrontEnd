@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
   private routesByRole: Record<string, string> = {
     [UserRoles.Admin]: '/inicio',
     [UserRoles.Teacher]: '/inicio/gestion-estudiantes',
-    [UserRoles.Student]: '/inicio/rutas-aprendizaje',
+    [UserRoles.Student]: '/encuesta-estilo-aprendizaje',
   };
 
   ngOnInit() {
