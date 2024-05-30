@@ -1,4 +1,5 @@
 import { MenuItem } from 'primeng/api';
+import { LearningRoutes } from "./index";
 
 export interface UserInformation {
   id: string;
@@ -7,6 +8,7 @@ export interface UserInformation {
   name: string;
   photoURL: string;
   menu?: MenuItem[];
+  learningPath?: LearningRoutes;
 }
 
 export enum UserRoles {

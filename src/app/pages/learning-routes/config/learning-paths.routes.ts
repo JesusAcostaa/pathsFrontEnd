@@ -9,17 +9,22 @@ export const learningPathsRoutes: Routes = [
       ),
     children: [
       {
-        path: 'juegos-visuales',
+        path: 'visual',
         loadComponent: () =>
           import('../pages').then(mod => mod.VisualGamesComponent),
       },
       {
-        path: 'juegos-auditivos',
+        path: 'auditivo',
         loadComponent: () =>
           import('../pages').then(mod => mod.AuditoryGamesComponent),
       },
       {
-        path: 'juegos-mixtos',
+        path: 'kinestesico',
+        loadComponent: () =>
+          import('../pages').then(mod => mod.KinestheticGamesComponent),
+      },
+      {
+        path: 'mixto',
         loadComponent: () =>
           import('../pages').then(mod => mod.MixedGamesComponent),
       },

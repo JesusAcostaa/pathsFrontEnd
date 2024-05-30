@@ -5,13 +5,17 @@ import { NgClass, TitleCasePipe } from '@angular/common';
 import { LottieComponent } from 'ngx-lottie';
 import { RippleModule } from 'primeng/ripple';
 import confetti from 'canvas-confetti';
-import { AuthService, LoaderService, StudentsService } from '../../core/services';
+import {
+  AuthService,
+  LoaderService,
+  StudentsService,
+} from '../../core/services';
 import { LearningStyleSurvey, SurveyOption, SurveyResult } from './interfaces';
-import { survey } from "./utils/survey";
-import { withLoader } from "../../core/decorartors";
-import { Router } from "@angular/router";
-import { LearningStyle } from "../../core/services/students.service";
-import { FormatLearningStylePipe } from "./utils/format-learning-style.pipe";
+import { survey } from './utils/survey';
+import { withLoader } from '../../core/decorartors';
+import { Router } from '@angular/router';
+import { LearningStyle } from '../../core/services/students.service';
+import { FormatLearningStylePipe } from './utils/format-learning-style.pipe';
 
 @Component({
   selector: 'app-learning-style-survey',
@@ -29,7 +33,7 @@ import { FormatLearningStylePipe } from "./utils/format-learning-style.pipe";
   styleUrl: './learning-style-survey.component.css',
 })
 export class LearningStyleSurveyComponent {
-  public currentUser = inject(AuthService).currentUser;
+  public authService = inject(AuthService);
 
   public active: number = 0;
   public surveys: LearningStyleSurvey[] = survey;
@@ -62,7 +66,6 @@ export class LearningStyleSurveyComponent {
       return results;
     });
 
-    console.log(this.surveyResults());
     this.showStars();
   }
 
@@ -136,7 +139,31 @@ export class LearningStyleSurveyComponent {
     const response = await this.studentsService.getLearningStyle(
       this.surveyResults()
     );
+
+    const user = {
+      role: this.currentUser()!.role,
+      photoURL: this.currentUser()!.photoURL,
+      name: this.currentUser()!.name,
+      email: this.currentUser()!.email,
+      id: this.currentUser()!.id,
+    };
+
+    await this.studentsService.update({
+      ...user,
+      learningPath: response.learningPath,
+    });
+
+    this.authService.updateCurrentUser({
+      ...this.currentUser()!,
+      menu: this.currentUser()!.menu,
+      learningPath: response.learningPath,
+    });
+
     this.learningStyle.set(response);
     this.isSurveyCompleted.set(true);
+  }
+
+  get currentUser() {
+    return this.authService.currentUser;
   }
 }

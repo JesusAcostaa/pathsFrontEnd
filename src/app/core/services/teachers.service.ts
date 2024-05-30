@@ -30,7 +30,6 @@ export class TeachersService {
       query(this._collection, where('email', '==', email))
     );
 
-    console.log(FirebaseUtils.getDataFromQuery(querySnapshot)[0])
     return FirebaseUtils.getDataFromQuery(querySnapshot)[0]
   }
 

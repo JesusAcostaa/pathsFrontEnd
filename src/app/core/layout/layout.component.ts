@@ -2,9 +2,8 @@ import { Component, inject } from '@angular/core';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { MenuComponent } from './components/menu/menu.component';
-import { AuthService } from '../services/auth.service';
+import { AuthService, LoaderService } from '../services';
 import { AsyncPipe } from '@angular/common';
-import { LoaderService } from '../services/loader.service';
 import { delay } from 'rxjs';
 
 const DELAY_LOGOUT_TIME = 1000;

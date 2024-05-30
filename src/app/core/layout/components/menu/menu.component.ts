@@ -1,4 +1,4 @@
-import { Component, input, OnInit, output } from '@angular/core';
+import { AfterViewInit, Component, input, OnInit, output } from '@angular/core';
 import { MenuModule } from 'primeng/menu';
 import { BadgeModule } from 'primeng/badge';
 import { AvatarModule } from 'primeng/avatar';
@@ -6,8 +6,9 @@ import { RippleModule } from 'primeng/ripple';
 import { MenuItem } from 'primeng/api';
 import { AsyncPipe, JsonPipe, NgIf, NgOptimizedImage } from '@angular/common';
 import { StyleClassModule } from 'primeng/styleclass';
-import { UserInformation } from '../../../interfaces';
+import { LearningRoutes, UserInformation } from '../../../interfaces';
 import { FormatNamePipe } from './format-name.pipe';
+import { routeByLearningPath } from '../../../../shared/utils';
 
 @Component({
   selector: 'app-menu',
@@ -27,11 +28,11 @@ import { FormatNamePipe } from './format-name.pipe';
     FormatNamePipe,
   ],
 })
-export class MenuComponent implements OnInit {
+export class MenuComponent implements OnInit, AfterViewInit {
   public onLogout = output<void>();
   public user = input<UserInformation | null>();
 
-  public items: MenuItem[] = [];
+  public menu: MenuItem[] = [];
 
   ngOnInit() {
     const logOutItem = {
@@ -40,9 +41,20 @@ export class MenuComponent implements OnInit {
       command: () => this.onLogout.emit(),
     };
 
-    this.items = this.user()?.menu ?? [];
-    this.items
+    this.menu = this.user()?.menu ?? [];
+    this.menu
       .find(item => item.label === 'Actividades')
       ?.items?.push(logOutItem);
+  }
+
+  ngAfterViewInit() {
+    const learningPath = this.user()?.learningPath;
+    const route = routeByLearningPath[learningPath ?? LearningRoutes.Mixed];
+    const element = this.menu.find(({ label }) => label === 'Actividades');
+
+    if (element) {
+      const item = element.items?.find(({ label }) => label === 'Rutas');
+      if (item) item.routerLink = route;
+    }
   }
 }

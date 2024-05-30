@@ -10,7 +10,8 @@ import {
 } from '@angular/forms';
 import { AuthService, ToastService, LoaderService } from '../../core/services';
 import { ButtonModule } from 'primeng/button';
-import { UserRoles } from '../../core/interfaces';
+import { LearningRoutes, UserRoles } from '../../core/interfaces';
+import { routeByLearningPath } from "../../shared/utils";
 
 interface LoginForm {
   email: FormControl<string>;
@@ -18,6 +19,7 @@ interface LoginForm {
 }
 
 const DELAY_LOGIN_TIME = 3000;
+const ROUTE_LEARNING_PATH = '/encuesta-estilo-aprendizaje';
 
 @Component({
   selector: 'app-login',
@@ -43,7 +45,7 @@ export class LoginComponent implements OnInit {
   private routesByRole: Record<string, string> = {
     [UserRoles.Admin]: '/inicio',
     [UserRoles.Teacher]: '/inicio/gestion-estudiantes',
-    [UserRoles.Student]: '/encuesta-estilo-aprendizaje',
+    [UserRoles.Student]: '/inicio/rutas-aprendizaje',
   };
 
   ngOnInit() {
@@ -66,10 +68,17 @@ export class LoginComponent implements OnInit {
     this.authService
       .login(email, password)
       .then(() => {
-        const role = this.authService.currentUser()?.role;
+        const { role, learningPath } = this.authService.currentUser() || {};
+
+        let route = this.routesByRole[role ?? ''];
+
+        if (role === UserRoles.Student && !learningPath) {
+          route = ROUTE_LEARNING_PATH;
+        } else if (role === UserRoles.Student) {
+          route = routeByLearningPath[learningPath ?? ''];
+        }
 
         if (role) {
-          const route = this.routesByRole[role];
           this.router.navigateByUrl(route);
         }
       })

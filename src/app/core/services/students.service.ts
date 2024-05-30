@@ -66,6 +66,7 @@ export class StudentsService {
 
     const doc = await addDoc(this._collection, {
       ...student,
+      learningPath: null,
       menu: this.menuRef(),
     });
 
@@ -74,13 +75,13 @@ export class StudentsService {
     );
   }
 
-  async update(teacher: UserInformation) {
-    await updateDoc(this.document(teacher.id), { ...teacher });
+  async update(student: UserInformation) {
+    await updateDoc(this.document(student.id), { ...student });
 
-    const index = this.students().findIndex(t => t.id === teacher.id);
-    this.students.update(teachers => {
-      teachers[index] = teacher;
-      return teachers;
+    const index = this.students().findIndex(t => t.id === student.id);
+    this.students.update(currentStudent => {
+      currentStudent[index] = student;
+      return currentStudent;
     });
   }
 

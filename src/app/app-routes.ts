@@ -20,6 +20,7 @@ export const routes: Routes = [
   },
   {
     path: 'encuesta-estilo-aprendizaje',
+    canActivate: [authenticationGuard],
     loadComponent: () =>
       import(
         './pages/learning-style-survey/learning-style-survey.component'

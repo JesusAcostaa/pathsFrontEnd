@@ -54,7 +54,7 @@ export class AuthService {
     return Math.random().toString(36).slice(-8);
   }
 
-  private updateCurrentUser(user: UserInformation) {
+  updateCurrentUser(user: UserInformation) {
     this.currentUser.set(user);
   }
 
