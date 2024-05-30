@@ -1,0 +1,23 @@
+<p-tabView
+  id="closableTabView"
+  (onChange)="hideMemoryGame()"
+>
+  <p-tabPanel header="Memoria" rightIcon="pi pi-face-smile"
+  >
+    <ng-template pTemplate="content">
+      <section class="flex justify-content-center align-items-center h-full">
+        <app-memory-card-game *ngIf="showMemoryGame()" (onReset)="hideMemoryGame()"/>
+      </section>
+    </ng-template>
+  </p-tabPanel>
+  <p-tabPanel header="Puzzle" rightIcon="pi pi-objects-column">
+    <ng-template pTemplate="content">
+      <app-puzzle-game/>
+    </ng-template>
+  </p-tabPanel>
+  <p-tabPanel header="Palabras homófonas" rightIcon="pi pi-megaphone">
+    <ng-template pTemplate="content">
+      <app-homophone-challenge [homophoneQuestions]="homophoneQuestions()" />
+    </ng-template>
+  </p-tabPanel>
+</p-tabView>

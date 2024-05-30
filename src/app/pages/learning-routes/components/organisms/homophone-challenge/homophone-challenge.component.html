@@ -1,9 +1,12 @@
 <section>
   <p-card>
     <ng-template pTemplate="header">
-      <h1 class="px-4 pt-1">¡Reproduce el sonido! 🔊</h1>
+      <h1 class="px-4 pt-1 text-2xl">¡Reproduce el sonido! 🔊</h1>
     </ng-template>
-    <audio controls [src]="question().audio" class="w-full"></audio>
+
+    <div class="w-21rem">
+      <audio controls [src]="question().audio" class="w-full"></audio>
+    </div>
 
     <div
       class="flex gap-3 user mt-3"

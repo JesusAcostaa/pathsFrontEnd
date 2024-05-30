@@ -130,7 +130,7 @@ export class FormDialogComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   get isEmailAvailable() {
-    return this.email.hasError('emailTaken') && this.email.touched;
+    return this.email.hasError('emailTaken') && this.email.dirty;
   }
 
   private isRequired(control: FormControl) {

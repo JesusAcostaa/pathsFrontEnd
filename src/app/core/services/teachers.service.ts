@@ -25,12 +25,13 @@ export class TeachersService {
 
   public teachers = signal<UserInformation[]>([]);
 
-  async isEmailAvailable(email: string): Promise<boolean> {
+  async isEmailAvailable(email: string): Promise<UserInformation> {
     const querySnapshot = await getDocs(
       query(this._collection, where('email', '==', email))
     );
 
-    return querySnapshot.empty;
+    console.log(FirebaseUtils.getDataFromQuery(querySnapshot)[0])
+    return FirebaseUtils.getDataFromQuery(querySnapshot)[0]
   }
 
   public async getAll() {

@@ -3,6 +3,7 @@ h1 {
   font-weight: 400;
   text-shadow: 2px 2px 22px rgb(103 197 221);
   color: #4c9cea;
+  text-align: center;
 }
 
 .card-question {

@@ -17,7 +17,12 @@ export const learningPathsRoutes: Routes = [
         path: 'juegos-auditivos',
         loadComponent: () =>
           import('../pages').then(mod => mod.AuditoryGamesComponent),
-      }
+      },
+      {
+        path: 'juegos-mixtos',
+        loadComponent: () =>
+          import('../pages').then(mod => mod.MixedGamesComponent),
+      },
     ],
   },
 ];
