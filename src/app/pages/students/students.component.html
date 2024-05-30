@@ -17,7 +17,7 @@
   </p-toolbar>
 
   <p-table
-    [value]="teachers()"
+    [value]="students()"
     [tableStyle]="{ 'min-width': '30rem' }"
     [(selection)]="selectedTeacher"
     selectionMode="single"
@@ -30,18 +30,24 @@
       <tr>
         <th>Nombre</th>
         <th>Correo</th>
+        <th>Estilo aprendizaje</th>
         <th>Foto</th>
         <th></th>
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-teacher>
+    <ng-template pTemplate="body" let-student>
       <tr>
-        <td>{{ teacher.name }}</td>
-        <td>{{ teacher.email }}</td>
+        <td>{{ student.name }}</td>
+        <td>{{ student.email }}</td>
+        @if (student.learningPath) {
+          <td class="font-bold">{{ student.learningPath | formatLearningStyle }}</td>
+        } @else {
+          <td class="font-italic">N/A</td>
+        }
         <td>
           <p-image
-            [src]="teacher.photoURL"
-            [alt]="'Foto de perfil de ' + teacher.name"
+            [src]="student.photoURL"
+            [alt]="'Foto de perfil de ' + student.name"
             width="60"
             height="auto"/>
         </td>
@@ -53,14 +59,14 @@
             [rounded]="true"
             [outlined]="true"
             severity="success"
-            (click)="handleEdit(teacher)"/>
+            (click)="handleEdit(student)"/>
           <p-button
             pRipple
             icon="pi pi-trash"
             severity="danger"
             [rounded]="true"
             [outlined]="true"
-            (click)="handleDelete(teacher, $event)"/>
+            (click)="handleDelete(student, $event)"/>
         </td>
       </tr>
     </ng-template>

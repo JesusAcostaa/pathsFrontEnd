@@ -10,7 +10,7 @@ import {
 } from '../../core/interfaces';
 import { HasLoaderService, withLoader } from '../../core/decorartors';
 import { TOAST_MESSAGES_STUDENT } from '../teachers/constants';
-import { StudentsService } from '../../core/services/students.service';
+import { StudentsService } from '../../core/services';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
@@ -18,6 +18,8 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { RippleModule } from 'primeng/ripple';
 import { TableModule } from 'primeng/table';
 import { ImageModule } from 'primeng/image';
+import { TitleCasePipe } from "@angular/common";
+import { FormatLearningStylePipe } from "../learning-style-survey/utils/format-learning-style.pipe";
 
 @Component({
   selector: 'app-students',
@@ -31,6 +33,8 @@ import { ImageModule } from 'primeng/image';
     TableModule,
     FormDialogComponent,
     ImageModule,
+    TitleCasePipe,
+    FormatLearningStylePipe,
   ],
   templateUrl: './students.component.html',
   styleUrl: './students.component.css',
@@ -137,7 +141,7 @@ export class StudentsComponent implements OnInit, HasLoaderService {
     this.isModalVisible.set(false);
   }
 
-  get teachers() {
+  get students() {
     return this.studentsService.students;
   }
 }

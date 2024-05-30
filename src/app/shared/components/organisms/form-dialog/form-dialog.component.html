@@ -47,12 +47,26 @@
           </small>
         }
 
-        @if(isEmailAvailable) {
+        @if (isEmailAvailable) {
           <small class="text-red-500">
             Este correo ya está en uso
           </small>
         }
       </div>
+
+      @if (isStudent && this.user()) {
+        <div class="field">
+          <label for="learning-path">Estilo aprendizaje</label>
+          <p-dropdown
+            id="learning-path"
+            formControlName="learningPath"
+            [options]="learningStyles"
+            optionLabel="label"
+            optionValue="value"
+            appendTo="body"
+            placeholder="Encuesta pendiente"/>
+        </div>
+      }
 
       <div class="field">
         <label for="role">Rol</label>

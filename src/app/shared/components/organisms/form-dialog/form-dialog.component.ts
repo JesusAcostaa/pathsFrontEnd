@@ -23,12 +23,14 @@ import { CommonModule } from '@angular/common';
 
 import {
   FormDialogParams,
+  LearningRoutes,
   UserInformation,
   UserRoles,
 } from '../../../../core/interfaces';
 import { ProfilePictureComponent } from '../../molecules/profile-picture/profile-picture.component';
 import { userEmailValidator } from '../../../utils';
 import { TeachersService } from '../../../../core/services';
+import { DropdownModule } from 'primeng/dropdown';
 
 const DEFAULT_IMAGE =
   'https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg?size=626&ext=jpg&ga=GA1.1.967060102.1715817600&semt=ais_user';
@@ -46,6 +48,7 @@ const DEFAULT_IMAGE =
     RippleModule,
     ReactiveFormsModule,
     ProfilePictureComponent,
+    DropdownModule,
   ],
   styleUrl: './form-dialog.component.css',
 })
@@ -60,12 +63,12 @@ export class FormDialogComponent implements OnInit, OnChanges, OnDestroy {
 
   private selectedFile = signal<File | null>(null);
   private readonly teacherService = inject(TeachersService);
+  public originalEmail = signal<string>('');
 
   public form = new FormGroup({
     name: new FormControl('', [Validators.required]),
     email: new FormControl('', {
       validators: [Validators.required, Validators.email],
-      asyncValidators: userEmailValidator(this.teacherService),
     }),
     photoURL: new FormControl({ value: DEFAULT_IMAGE, disabled: false }, [
       Validators.required,
@@ -74,16 +77,47 @@ export class FormDialogComponent implements OnInit, OnChanges, OnDestroy {
     id: new FormControl(''),
   });
 
+  public learningStyles = [
+    { label: 'Visual', value: LearningRoutes.Visual },
+    { label: 'Auditivo', value: LearningRoutes.Auditory },
+    { label: 'Kinestésico', value: LearningRoutes.Kinesthetic },
+    { label: 'Mixto', value: LearningRoutes.Mixed },
+  ];
+
   ngOnInit() {
     this.form.patchValue({
       role: this.role(),
     });
+
+    if (this.isStudent) {
+      // @ts-ignore
+      this.form.addControl(
+        'learningPath',
+        new FormControl('')
+      );
+    }
   }
 
   ngOnChanges() {
     if (this.user()) {
       this.form.patchValue(this.user() as Partial<UserInformation>);
+
+      if (!this.user()?.learningPath) {
+        this.learningPath.disable();
+      } else {
+        this.learningPath.enable();
+      }
     }
+
+    this.setAsyncValidatorEmail();
+  }
+
+  private setAsyncValidatorEmail() {
+    this.originalEmail.set(this.email.value ?? '');
+    this.email.setAsyncValidators(
+      userEmailValidator(this.originalEmail(), this.teacherService)
+    );
+    this.email.updateValueAndValidity();
   }
 
   public handleSave() {
@@ -125,12 +159,21 @@ export class FormDialogComponent implements OnInit, OnChanges, OnDestroy {
     return this.isRequired(this.email);
   }
 
+  get learningPath(): FormControl {
+    // @ts-ignore
+    return this.form.controls['learningPath'];
+  }
+
   get isInvalidEmail() {
     return this.email.hasError('email') && this.email.touched;
   }
 
   get isEmailAvailable() {
     return this.email.hasError('emailTaken') && this.email.dirty;
+  }
+
+  get isStudent() {
+    return this.role() === UserRoles.Student;
   }
 
   private isRequired(control: FormControl) {
